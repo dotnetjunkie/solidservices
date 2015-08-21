@@ -7,7 +7,6 @@
     using BusinessLayer;
     using Contract;
     using SimpleInjector;
-    using SimpleInjector.Extensions;
     using WcfService.Code;
     using WcfService.CrossCuttingConcerns;
 
@@ -34,8 +33,6 @@
 
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(ToWcfFaultTranslatorCommandHandlerDecorator<>));
 
-            container.EnablePerWcfOperationLifestyle();
-
             container.RegisterWcfServices(Assembly.GetExecutingAssembly());
 
             RegisterWcfSpecificDependencies();
@@ -45,7 +42,7 @@
 
         private static void RegisterWcfSpecificDependencies()
         {
-            container.RegisterSingle<ILogger, DebugLogger>();
+            container.RegisterSingleton<ILogger, DebugLogger>();
 
             container.Register<IPrincipal>(() => Thread.CurrentPrincipal);
         }
