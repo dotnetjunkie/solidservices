@@ -1,0 +1,6 @@
+﻿<%@ ServiceHost 
+    Language="C#" 
+    Debug="true" 
+    Service="WcfService.CommandService" 
+    CodeBehind="CommandService.svc.cs" 
+%>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Contract.Queries.Orders" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Contract.Queries.Orders" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:9999/QueryService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="GetOrderByIdQuery">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="OrderId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetOrderByIdQuery" nillable="true" type="tns:GetOrderByIdQuery" />
+  <xs:complexType name="GetUnshippedOrdersForCurrentCustomerQuery">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PageIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="PageSize" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetUnshippedOrdersForCurrentCustomerQuery" nillable="true" type="tns:GetUnshippedOrdersForCurrentCustomerQuery" />
+</xs:schema>
