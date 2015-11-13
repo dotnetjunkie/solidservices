@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contract</RootNamespace>
     <AssemblyName>Contract</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,9 +37,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -46,16 +50,14 @@
     <Compile Include="Commands\Orders\ShipOrderCommand.cs" />
     <Compile Include="DTOs\Address.cs" />
     <Compile Include="DTOs\OrderInfo.cs" />
-    <Compile Include="HttpMethod.cs" />
-    <Compile Include="ICommandHandler.cs" />
     <Compile Include="IQuery.cs" />
-    <Compile Include="IQueryHandler.cs" />
     <Compile Include="IQueryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Orders\GetOrderByIdQuery.cs" />
     <Compile Include="Queries\Orders\GetUnshippedOrdersForCurrentCustomerQuery.cs" />
-    <Compile Include="WebApiMethodAttribute.cs" />
-    <Compile Include="WebApiResponseAttribute.cs" />
+    <Compile Include="Validators\CompositeValidationResult.cs" />
+    <Compile Include="Validators\NonEmptyGuidAttribute.cs" />
+    <Compile Include="Validators\ValidateObjectAttribute.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

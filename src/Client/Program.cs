@@ -1,8 +1,6 @@
 ﻿namespace Client
 {
     using System;
-
-    using Client.CompositionRoot;
     using Client.Controllers;
 
     public class Program

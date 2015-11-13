@@ -1,7 +1,6 @@
 ﻿namespace Client.Controllers
 {
     using System;
-    using Contract;
     using Contract.Commands.Orders;
     using Contract.DTOs;
 
@@ -22,6 +21,7 @@
         {
             var createOrderCommand = new CreateOrderCommand
             {
+                NewOrderId = Guid.NewGuid(),
                 ShippingAddress = new Address
                 {
                     Country = "The Netherlands",
@@ -32,9 +32,9 @@
 
             this.createOrderhandler.Handle(createOrderCommand);
 
-            Console.WriteLine("Order with ID {0} has been created.", createOrderCommand.CreatedOrderId);
+            Console.WriteLine("Order with ID {0} has been created.", createOrderCommand.NewOrderId);
 
-            return createOrderCommand.CreatedOrderId;
+            return createOrderCommand.NewOrderId;
         }
 
         public void ShipOrder(Guid orderId)

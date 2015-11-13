@@ -1,8 +1,6 @@
 ﻿namespace WcfService
 {
     using System;
-    
-    using WcfService.CompositionRoot;
 
     public class Global : System.Web.HttpApplication
     {

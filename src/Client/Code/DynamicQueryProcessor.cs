@@ -1,4 +1,4 @@
-﻿namespace Client.CompositionRoot
+﻿namespace Client.Code
 {
     using System.Diagnostics;
     using Contract;

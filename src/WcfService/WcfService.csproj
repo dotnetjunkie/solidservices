@@ -55,12 +55,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector, Version=3.0.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.3.0.1\lib\net40-client\SimpleInjector.dll</HintPath>
+    <Reference Include="SimpleInjector, Version=3.1.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.1.0\lib\net40-client\SimpleInjector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector.Integration.Wcf, Version=3.0.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.Integration.Wcf.3.0.1\lib\net40\SimpleInjector.Integration.Wcf.dll</HintPath>
+    <Reference Include="SimpleInjector.Integration.Wcf, Version=3.1.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Integration.Wcf.3.1.0\lib\net40\SimpleInjector.Integration.Wcf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -99,10 +99,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\WcfExceptionTranslator.cs" />
     <Compile Include="CommandService.svc.cs">
       <DependentUpon>CommandService.svc</DependentUpon>
     </Compile>
-    <Compile Include="CompositionRoot\Bootstrapper.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Code\DebugLogger.cs" />
     <Compile Include="CrossCuttingConcerns\ToWcfFaultTranslatorCommandHandlerDecorator.cs" />
     <Compile Include="Global.asax.cs">
@@ -117,6 +118,7 @@
     <Compile Include="QueryService.svc.cs">
       <DependentUpon>QueryService.svc</DependentUpon>
     </Compile>
+    <Compile Include="ValidationError.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NonDotNetQueryService.tt">
@@ -140,9 +142,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Start\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

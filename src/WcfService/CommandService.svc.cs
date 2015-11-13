@@ -2,42 +2,42 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.ComponentModel.DataAnnotations;
     using System.Reflection;
     using System.ServiceModel;
-       
-    using Contract;
-    
-    using WcfService.CompositionRoot;
+    using Code;
 
     [ServiceContract(Namespace = "http://www.solid.net/commandservice/v1.0")]
-    [ServiceKnownType("GetKnownTypes")]
+    [ServiceKnownType(nameof(GetKnownTypes))]
     public class CommandService
     {
+        public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider) =>
+            Bootstrapper.GetCommandTypes();
+
         [OperationContract]
-        public object Execute(dynamic command)
+        [FaultContract(typeof(ValidationError))]
+        public void Execute(dynamic command)
         {
-            Type commandHandlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
+            try
+            {
+                dynamic commandHandler = Bootstrapper.GetCommandHandler(command.GetType());
 
-            dynamic commandHandler = Bootstrapper.GetInstance(commandHandlerType);
+                commandHandler.Handle(command);
+            }
+            catch (Exception ex)
+            {
+                Bootstrapper.Log(ex);
 
-            commandHandler.Handle(command);
+                var faultException = WcfExceptionTranslator.CreateFaultExceptionOrNull(ex);
 
-            // Instead of returning the output property of a command, we just return the complete command.
-            // There is some overhead in this, but is of course much easier than returning a part of the command.
-            return command;
+                if (faultException != null)
+                {
+                    throw faultException;
+                }
+
+                throw;
+            }
         }
 
-        public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider)
-        {
-            var coreAssembly = typeof(ICommandHandler<>).Assembly;
-
-            var commandTypes =
-                from type in coreAssembly.GetExportedTypes()
-                where type.Name.EndsWith("Command")
-                select type;
-
-            return commandTypes.ToArray();
-        }
     }
 }

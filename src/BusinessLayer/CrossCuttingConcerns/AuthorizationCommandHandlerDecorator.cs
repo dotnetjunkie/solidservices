@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.CrossCuttingConcerns
 {
-    using System;
+    using System.Security;
     using System.Security.Principal;
 
     using Contract;
@@ -31,7 +31,7 @@
             // Some useful authorization logic here.
             if (typeof(TCommand).Namespace.Contains("Admin") && !this.currentUser.IsInRole("Admin"))
             {
-                throw new AuthorizationException();
+                throw new SecurityException();
             }
 
             this.logger.Log("User " + this.currentUser.Identity.Name + " has been authorized to execute " + 

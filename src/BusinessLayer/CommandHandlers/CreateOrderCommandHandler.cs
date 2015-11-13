@@ -1,7 +1,5 @@
 ﻿namespace BusinessLayer.CommandHandlers
 {
-    using System;
-
     using Contract;
     using Contract.Commands.Orders;
 
@@ -17,8 +15,6 @@
         public void Handle(CreateOrderCommand command)
         {
             // Do something useful here.
-            command.CreatedOrderId = Guid.NewGuid();
-
             this.logger.Log(this.GetType().Name + " has been executed successfully.");
         }
     }

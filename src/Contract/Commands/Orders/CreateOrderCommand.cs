@@ -1,15 +1,16 @@
 ﻿namespace Contract.Commands.Orders
 {
     using System;
-    using System.Net;
+    using System.ComponentModel.DataAnnotations;
     using Contract.DTOs;
+    using Validators;
 
-    [WebApiResponse(HttpStatusCode.Created)]
     public class CreateOrderCommand
     {
+        [NonEmptyGuid]
+        public Guid NewOrderId { get; set; }
+
+        [Required, ValidateObject]
         public Address ShippingAddress { get; set; }
-        
-        // Output property
-        public Guid CreatedOrderId { get; set; }
     }
 }

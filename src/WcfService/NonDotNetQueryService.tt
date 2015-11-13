@@ -42,10 +42,7 @@ namespace WcfService
     using <#=referencedNamespace #>;
 <#} #>
 
-    using WcfService.CompositionRoot;
-
     [ServiceContract(Namespace = "http://www.cuttingedge.it/solid/queryservice/v1.0")]
-    [ServiceKnownType("GetKnownTypes")]
     public class NonDotNetQueryService
     {
 <#
@@ -55,18 +52,11 @@ namespace WcfService
 			var resultType = GetQueryResultType(@interface);
 
 #>        [OperationContract]
-        public <#= resultType #> Execute<#= queryType.Name #>(<#= queryType.Name #> query)
-        {
-            return Execute<<#= queryType.Name #>, <#= resultType #>>(query);
-        }
-        
+		[FaultContract(typeof(ValidationError))]
+        public <#= resultType #> <#= queryType.Name.Replace("Query", "") #>(<#= queryType.Name #> query) => Execute(query);
+			     
 <#      } #>
-
-		private static TResult Execute<TQuery, TResult>(TQuery query) where TQuery : IQuery<TResult>
-		{
-			var handler = Bootstrapper.GetInstance<IQueryHandler<TQuery, TResult>>();
-			return handler.Handle(query);
-		}
+		private static TResult Execute<TResult>(IQuery<TResult> query) => (TResult)QueryService.ExecuteQuery(query);
 	}
 }
 <#+ 

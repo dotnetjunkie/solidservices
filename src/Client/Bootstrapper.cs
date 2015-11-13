@@ -1,4 +1,4 @@
-﻿namespace Client.CompositionRoot
+﻿namespace Client
 {
     using Client.Code;
     using Client.CrossCuttingConcerns;
@@ -14,10 +14,10 @@
         {
             container = new Container();
 
-            container.RegisterSingle<IQueryProcessor, DynamicQueryProcessor>();
+            container.RegisterSingleton<IQueryProcessor>(new DynamicQueryProcessor(container));
 
-            container.RegisterOpenGeneric(typeof(ICommandHandler<>), typeof(WcfServiceCommandHandlerProxy<>));
-            container.RegisterOpenGeneric(typeof(IQueryHandler<,>), typeof(WcfServiceQueryHandlerProxy<,>));
+            container.Register(typeof(ICommandHandler<>), typeof(WcfServiceCommandHandlerProxy<>));
+            container.Register(typeof(IQueryHandler<,>), typeof(WcfServiceQueryHandlerProxy<,>));
 
             container.RegisterDecorator(typeof(ICommandHandler<>),
                 typeof(FromWcfFaultTranslatorCommandHandlerDecorator<>));

@@ -7,29 +7,17 @@ namespace WcfService
     using Contract;
     using Contract.Queries.Orders;
 
-    using WcfService.CompositionRoot;
-
     [ServiceContract(Namespace = "http://www.cuttingedge.it/solid/queryservice/v1.0")]
-    [ServiceKnownType("GetKnownTypes")]
     public class NonDotNetQueryService
     {
         [OperationContract]
-        public Contract.DTOs.OrderInfo ExecuteGetOrderByIdQuery(GetOrderByIdQuery query)
-        {
-            return Execute<GetOrderByIdQuery, Contract.DTOs.OrderInfo>(query);
-        }
-        
+		[FaultContract(typeof(ValidationError))]
+        public Contract.DTOs.OrderInfo GetOrderById(GetOrderByIdQuery query) => Execute(query);
+			     
         [OperationContract]
-        public Contract.DTOs.OrderInfo[] ExecuteGetUnshippedOrdersForCurrentCustomerQuery(GetUnshippedOrdersForCurrentCustomerQuery query)
-        {
-            return Execute<GetUnshippedOrdersForCurrentCustomerQuery, Contract.DTOs.OrderInfo[]>(query);
-        }
-        
-
-		private static TResult Execute<TQuery, TResult>(TQuery query) where TQuery : IQuery<TResult>
-		{
-			var handler = Bootstrapper.GetInstance<IQueryHandler<TQuery, TResult>>();
-			return handler.Handle(query);
-		}
+		[FaultContract(typeof(ValidationError))]
+        public Contract.DTOs.OrderInfo[] GetUnshippedOrdersForCurrentCustomer(GetUnshippedOrdersForCurrentCustomerQuery query) => Execute(query);
+			     
+		private static TResult Execute<TResult>(IQuery<TResult> query) => (TResult)QueryService.ExecuteQuery(query);
 	}
 }

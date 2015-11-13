@@ -2,65 +2,44 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using System.ServiceModel;
-
-    using Contract;
-
-    using WcfService.CompositionRoot;
+    using Code;
 
     [ServiceContract(Namespace = "http://www.cuttingedge.it/solid/queryservice/v1.0")]
-    [ServiceKnownType("GetKnownTypes")]
+    [ServiceKnownType(nameof(GetKnownTypes))]
     public class QueryService
     {
+        public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider) =>
+            Bootstrapper.GetQueryAndResultTypes();
+
         [OperationContract]
-        public object Execute(dynamic query)
+        [FaultContract(typeof(ValidationError))]
+        public object Execute(dynamic query) => ExecuteQuery(query);
+
+        internal static object ExecuteQuery(dynamic query)
         {
             Type queryType = query.GetType();
-            Type resultType = GetQueryResultType(queryType);
-            Type queryHandlerType = typeof(IQueryHandler<,>).MakeGenericType(queryType, resultType);
 
-            dynamic queryHandler = Bootstrapper.GetInstance(queryHandlerType);
+            dynamic queryHandler = Bootstrapper.GetQueryHandler(query.GetType());
 
-            return queryHandler.Handle(query);
-        }
+            try
+            {
+                return queryHandler.Handle(query);
+            }
+            catch (Exception ex)
+            {
+                Bootstrapper.Log(ex);
 
-        public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider)
-        {
-            var contractAssembly = typeof(IQuery<>).Assembly;
+                var faultException = WcfExceptionTranslator.CreateFaultExceptionOrNull(ex);
 
-            var queryTypes = (
-                from type in contractAssembly.GetExportedTypes()
-                where TypeIsQueryType(type)
-                select type)
-                .ToList();
+                if (faultException != null)
+                {
+                    throw faultException;
+                }
 
-            var resultTypes =
-                from queryType in queryTypes
-                select GetQueryResultType(queryType);
-
-            return queryTypes.Union(resultTypes).ToArray();
-        }
-
-        private static bool TypeIsQueryType(Type type)
-        {
-            return GetQueryInterface(type) != null;
-        }
-
-        private static Type GetQueryResultType(Type queryType)
-        {
-            return GetQueryInterface(queryType).GetGenericArguments()[0];
-        }
-
-        private static Type GetQueryInterface(Type type)
-        {
-            return (
-                from @interface in type.GetInterfaces()
-                where @interface.IsGenericType
-                where typeof(IQuery<>).IsAssignableFrom(@interface.GetGenericTypeDefinition())
-                select @interface)
-                .SingleOrDefault();
+                throw;
+            }
         }
     }
 }

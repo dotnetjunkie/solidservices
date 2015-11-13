@@ -1,10 +1,7 @@
 ﻿namespace BusinessLayer.CrossCuttingConcerns
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Security;
     using System.Security.Principal;
-    using System.Text;
     using Contract;
 
     public class AuthorizationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult> 
@@ -34,7 +31,7 @@
             // Some useful authorization logic here.
             if (typeof(TQuery).Namespace.Contains("Admin") && !this.currentUser.IsInRole("Admin"))
             {
-                throw new AuthorizationException();
+                throw new SecurityException();
             }
 
             this.logger.Log("User " + this.currentUser.Identity.Name + " has been authorized to execute " +

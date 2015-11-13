@@ -1,34 +1,31 @@
 ﻿namespace Client.Code
 {
-    using System.Linq;
-
+    using System;
     using Client.CommandServices;
-    using Contract;
 
     public sealed class WcfServiceCommandHandlerProxy<TCommand> : ICommandHandler<TCommand>
     {
         public void Handle(TCommand command)
         {
-            using (var service = new CommandServiceClient())
-            {
-                object result = service.Execute(command);
+            var service = new CommandServiceClient();
 
-                Update(source: result, destination: command);
+            try
+            {
+                service.Execute(command);
             }
-        }
-
-        private static void Update(object source, object destination)
-        {
-            var properties =
-                from property in destination.GetType().GetProperties()
-                where property.CanRead && property.CanWrite
-                select property;
-
-            foreach (var property in properties)
+            finally
             {
-                object value = property.GetValue(source, null);
-
-                property.SetValue(destination, value, null);
+                try
+                {
+                    ((IDisposable)service).Dispose();
+                }
+                catch
+                {
+                    // Against good practice and the Framework Design Guidelines, WCF can through an
+                    // exception during a call to Dispose, which can result in loss of the original exception.
+                    // See: https://marcgravell.blogspot.com/2008/11/dontdontuse-using.html
+                    // See: https://msdn.microsoft.com/en-us/library/aa355056.aspx
+                }
             }
         }
     }
