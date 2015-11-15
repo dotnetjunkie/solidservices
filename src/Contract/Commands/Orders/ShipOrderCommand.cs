@@ -1,7 +1,8 @@
 ﻿namespace Contract.Commands.Orders
 {
     using System;
-    using Validators;
+
+    using Contract.Validators;
 
     public class ShipOrderCommand
     {

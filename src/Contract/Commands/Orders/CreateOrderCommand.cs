@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using Contract.DTOs;
-    using Validators;
+    using Contract.Validators;
 
     public class CreateOrderCommand
     {

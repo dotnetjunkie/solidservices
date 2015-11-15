@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Security;
 
     // Allows translating exceptions thrown by the business layer to HttpResponseExceptions. 
@@ -47,6 +49,12 @@
 
             // If the thrown exception can't be handled: return null.
             return null;
+        }
+
+        public static string GetValueOrNull(this HttpRequestHeaders headers, string name)
+        {
+            IEnumerable<string> values;
+            return headers.TryGetValues(name, out values) ? values.FirstOrDefault() : null;
         }
     }
 }

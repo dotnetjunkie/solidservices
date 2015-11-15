@@ -24,8 +24,8 @@
         {
             this.serviceLocator = serviceLocator;
             this.queryTypes = queryTypes.ToDictionary(
-                keySelector: info => info.QueryType.Name.Replace("Query", string.Empty), 
-                elementSelector: info => info, 
+                keySelector: info => info.QueryType.Name.Replace("Query", string.Empty),
+                elementSelector: info => info,
                 comparer: StringComparer.OrdinalIgnoreCase);
         }
 
@@ -34,6 +34,8 @@
         {
             // GetDependencyScope() calls IDependencyResolver.BeginScope internally.
             request.GetDependencyScope();
+
+            ApplyHeaders(request);
 
             IHttpRouteData data = request.GetRouteData();
 
@@ -45,27 +47,20 @@
 
             Type handlerType = typeof(IQueryHandler<,>).MakeGenericType(info.QueryType, info.ResultType);
 
-            dynamic query = JsonConvert.DeserializeObject(queryData, info.QueryType);
-
             dynamic handler = this.serviceLocator.Invoke(handlerType);
-
-            var formatter = request.GetConfiguration().Formatters.OfType<JsonMediaTypeFormatter>().First();
 
             if (request.Method == HttpMethod.Get)
             {
                 return GetExampleMessage(info, request);
             }
 
+            dynamic query = DeserializeQuery(request, queryData, info.QueryType);
+
             try
             {
                 object result = handler.Handle(query);
 
-                return new HttpResponseMessage
-                {
-                    Content = new ObjectContent(info.ResultType, result, formatter),
-                    StatusCode = HttpStatusCode.OK,
-                    RequestMessage = request
-                };
+                return CreateResponse(result, info.ResultType, HttpStatusCode.OK, request);
             }
             catch (Exception ex)
             {
@@ -80,6 +75,14 @@
             }
         }
 
+        private void ApplyHeaders(HttpRequestMessage request)
+        {
+            // TODO: Here you read the relevant headers and and check them or apply them to the current scope
+            // so the values are accessible during execution of the query.
+            string sessionId = request.Headers.GetValueOrNull("sessionId");
+            string token = request.Headers.GetValueOrNull("CSRF-token");
+        }
+
         private HttpResponseMessage GetExampleMessage(QueryInfo info, HttpRequestMessage request)
         {
             object query = ExampleObjectCreator.GetSampleInstance(info.QueryType);
@@ -87,12 +90,24 @@
 
             var data = new { query, result };
 
+            return CreateResponse(data, data.GetType(), HttpStatusCode.MethodNotAllowed, request);
+        }
+
+        private static HttpResponseMessage CreateResponse(object data, Type dataType, HttpStatusCode code,
+            HttpRequestMessage request)
+        {
             return new HttpResponseMessage
             {
-                Content = new ObjectContent(data.GetType(), data, new JsonMediaTypeFormatter { Indent = true }),
-                StatusCode = HttpStatusCode.MethodNotAllowed,
+                Content = new ObjectContent(dataType, data, GetJsonFormatter(request)),
+                StatusCode = code,
                 RequestMessage = request
             };
         }
+
+        private static dynamic DeserializeQuery(HttpRequestMessage request, string json, Type queryType) =>
+            JsonConvert.DeserializeObject(json, queryType, GetJsonFormatter(request).SerializerSettings);
+
+        private static JsonMediaTypeFormatter GetJsonFormatter(HttpRequestMessage request) => 
+            request.GetConfiguration().Formatters.JsonFormatter;
     }
 }
