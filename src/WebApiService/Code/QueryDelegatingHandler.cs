@@ -85,8 +85,8 @@
 
         private HttpResponseMessage GetExampleMessage(QueryInfo info, HttpRequestMessage request)
         {
-            object query = ExampleObjectCreator.GetSampleInstance(info.QueryType);
-            object result = ExampleObjectCreator.GetSampleInstance(info.ResultType);
+            object query = ExampleObjectCreator.Create(info.QueryType);
+            object result = ExampleObjectCreator.Create(info.ResultType);
 
             var data = new { query, result };
 

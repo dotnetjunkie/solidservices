@@ -6,7 +6,6 @@
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Formatting;
-    using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http.Routing;
@@ -85,7 +84,7 @@
 
         private static HttpResponseMessage GetExampleMessage(Type commandType, HttpRequestMessage request)
         {
-            object command = ExampleObjectCreator.GetSampleInstance(commandType);
+            object command = ExampleObjectCreator.Create(commandType);
 
             return new HttpResponseMessage
             {
