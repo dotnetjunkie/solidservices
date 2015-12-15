@@ -14,14 +14,12 @@
 
     public sealed class CommandDelegatingHandler : DelegatingHandler
     {
-        public const string CommandNameTag = "command";
-
-        private readonly Func<Type, object> serviceLocator;
+        private readonly Func<Type, object> handlerFactory;
         private readonly Dictionary<string, Type> commandTypes;
 
-        public CommandDelegatingHandler(Func<Type, object> serviceLocator, IEnumerable<Type> commandTypes)
+        public CommandDelegatingHandler(Func<Type, object> handlerFactory, IEnumerable<Type> commandTypes)
         {
-            this.serviceLocator = serviceLocator;
+            this.handlerFactory = handlerFactory;
             this.commandTypes = commandTypes.ToDictionary(
                 keySelector: type => type.Name.Replace("Command", string.Empty),
                 elementSelector: type => type,
@@ -31,27 +29,30 @@
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            // GetDependencyScope() calls IDependencyResolver.BeginScope internally.
-            request.GetDependencyScope();
+            string commandName = request.GetRouteData().Values["command"].ToString();
 
-            ApplyHeaders(request);
-
-            IHttpRouteData data = request.GetRouteData();
-
-            string commandName = data.Values[CommandNameTag].ToString();
-
-            string commandData = await request.Content.ReadAsStringAsync();
+            if (!this.commandTypes.ContainsKey(commandName))
+            {
+                return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound, RequestMessage = request };
+            }
 
             Type commandType = this.commandTypes[commandName];
-
-            Type handlerType = typeof(ICommandHandler<>).MakeGenericType(commandType);
-
-            dynamic handler = this.serviceLocator.Invoke(handlerType);
 
             if (request.Method == HttpMethod.Get)
             {
                 return GetExampleMessage(commandType, request);
             }
+
+            string commandData = await request.Content.ReadAsStringAsync();
+
+            Type handlerType = typeof(ICommandHandler<>).MakeGenericType(commandType);
+
+            // GetDependencyScope() calls IDependencyResolver.BeginScope internally.
+            request.GetDependencyScope();
+
+            ApplyHeaders(request);
+
+            dynamic handler = this.handlerFactory.Invoke(handlerType);
 
             dynamic command = DeserializeCommand(request, commandData, commandType);
 

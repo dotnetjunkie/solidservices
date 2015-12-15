@@ -136,6 +136,7 @@
     <Compile Include="Code\CommandDelegatingHandler.cs" />
     <Compile Include="Code\ExampleObjectCreator.cs" />
     <Compile Include="Code\QueryDelegatingHandler.cs" />
+    <Compile Include="Code\SerializationHelpers.cs" />
     <Compile Include="Code\WebApiExceptionTranslator.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Global.asax.cs">

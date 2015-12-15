@@ -21,7 +21,7 @@
                 defaults: new { },
                 constraints: new { },
                 handler: new QueryDelegatingHandler(
-                    serviceLocator: container.GetInstance,
+                    handlerFactory: container.GetInstance,
                     queryTypes: Bootstrapper.GetKnownQueryTypes()));
 
             config.Routes.MapHttpRoute(
@@ -30,7 +30,7 @@
                 defaults: new { },
                 constraints: new { },
                 handler: new CommandDelegatingHandler(
-                    serviceLocator: container.GetInstance,
+                    handlerFactory: container.GetInstance,
                     commandTypes: Bootstrapper.GetKnownCommandTypes()));
 
             config.Routes.MapHttpRoute(
