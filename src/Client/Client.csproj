@@ -56,7 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Code\CommandServiceClient.cs" />
     <Compile Include="Code\DynamicQueryProcessor.cs" />
+    <Compile Include="Code\QueryServiceClient.cs" />
+    <Compile Include="Wcf\KnownCommandTypesAttribute.cs" />
+    <Compile Include="Wcf\KnownQueryAndResultTypesAttribute.cs" />
+    <Compile Include="Wcf\KnownTypesAttribute.cs" />
+    <Compile Include="Wcf\KnownTypesDataContractResolver.cs" />
     <Compile Include="Code\WcfServiceCommandHandlerProxy.cs" />
     <Compile Include="Code\WcfServiceQueryHandlerProxy.cs" />
     <Compile Include="Controllers\CommandExampleController.cs" />
@@ -66,16 +72,6 @@
     <Compile Include="IQueryHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\CommandServices\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\QueryServices\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj">
@@ -86,71 +82,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Service References\CommandServices\CommandService.wsdl" />
-    <None Include="Service References\CommandServices\CommandService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CommandServices\CommandService1.wsdl" />
-    <None Include="Service References\CommandServices\CommandService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CommandServices\CommandService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CommandServices\CommandService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QueryServices\QueryService.wsdl" />
-    <None Include="Service References\QueryServices\QueryService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QueryServices\QueryService1.wsdl" />
-    <None Include="Service References\QueryServices\QueryService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QueryServices\QueryService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QueryServices\QueryService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\CommandServices\" />
-    <WCFMetadataStorage Include="Service References\QueryServices\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\CommandServices\CommandService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\CommandServices\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\CommandServices\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\CommandServices\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\QueryServices\QueryService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\QueryServices\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\QueryServices\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\QueryServices\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
