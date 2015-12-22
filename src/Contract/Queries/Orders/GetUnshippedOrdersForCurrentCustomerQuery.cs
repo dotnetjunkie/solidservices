@@ -2,10 +2,8 @@
 {
     using Contract.DTOs;
 
-    public class GetUnshippedOrdersForCurrentCustomerQuery : IQuery<OrderInfo[]>
+    public class GetUnshippedOrdersForCurrentCustomerQuery : IQuery<Paged<OrderInfo>>
     {
-        public int PageIndex { get; set; }
-
-        public int PageSize { get; set; }
+        public PageInfo Paging { get; set; }
     }
 }

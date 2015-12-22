@@ -16,7 +16,7 @@ namespace WcfService
 			     
         [OperationContract]
 		[FaultContract(typeof(ValidationError))]
-        public Contract.DTOs.OrderInfo[] GetUnshippedOrdersForCurrentCustomer(GetUnshippedOrdersForCurrentCustomerQuery query) => Execute(query);
+        public Contract.Queries.Paged<Contract.DTOs.OrderInfo> GetUnshippedOrdersForCurrentCustomer(GetUnshippedOrdersForCurrentCustomerQuery query) => Execute(query);
 			     
 		private static TResult Execute<TResult>(IQuery<TResult> query) => (TResult)QueryService.ExecuteQuery(query);
 	}

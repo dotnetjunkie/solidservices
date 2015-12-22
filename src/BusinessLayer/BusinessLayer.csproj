@@ -59,6 +59,7 @@
     <Compile Include="CrossCuttingConcerns\AuthorizationQueryHandlerDecorator.cs" />
     <Compile Include="CrossCuttingConcerns\DataAnnotationsValidator.cs" />
     <Compile Include="CrossCuttingConcerns\ValidationCommandHandlerDecorator.cs" />
+    <Compile Include="Helpers\PagingExtensions.cs" />
     <Compile Include="ICommandHandler.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IQueryHandler.cs" />

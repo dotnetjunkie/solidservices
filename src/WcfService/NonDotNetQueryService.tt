@@ -192,10 +192,10 @@ private CodeInterface GetQueryInterfaceForCodeClass(CodeClass2 type)
 
 	return queryInterfaces.FirstOrDefault();
 }
-
+private static readonly int iqueryTypeNameLength = "Contract.IQuery".Length;
 private static string GetQueryResultType(CodeInterface queryType)
 {
-	return queryType.FullName.Split('<', '>')[1];
+	return queryType.FullName.Substring(iqueryTypeNameLength + 1, queryType.FullName.Length - (iqueryTypeNameLength + 2));
 }
 
 #>

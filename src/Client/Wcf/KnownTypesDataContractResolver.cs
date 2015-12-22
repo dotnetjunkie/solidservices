@@ -21,15 +21,16 @@
                 .ToDictionary(GetName);
         }
 
-        private static string GetName(Type type) =>
-            type.IsArray ? "ArrayOf" + GetName(type.GetElementType()) : type.Name;
-
         public override Type ResolveName(string typeName, string typeNamespace, Type declaredType,
             DataContractResolver knownTypeResolver)
         {
+            bool genericTypeName = typeName.Contains("mX0E");
+
+            string knownTypeName = genericTypeName ? typeName.Substring(0, typeName.IndexOf("mX0E")) : typeName;
+
             Type type;
 
-            return this.knownTypes.TryGetValue(typeName, out type)
+            return this.knownTypes.TryGetValue(knownTypeName, out type)
                 ? type
                 : knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
         }
@@ -45,6 +46,18 @@
             }
 
             return true;
+        }
+
+        private static string GetName(Type type) =>
+            type.IsArray
+                ? "ArrayOf" + GetName(type.GetElementType())
+                : type.IsGenericType ? GetGenericName(type) : type.Name;
+
+        private static string GetGenericName(Type type)
+        {
+            Type typeDef = type.GetGenericTypeDefinition();
+            string name = typeDef.Name.Substring(0, typeDef.Name.IndexOf('`'));
+            return name + "Of" + string.Join(string.Empty, type.GetGenericArguments().Select(GetName));
         }
     }
 }
