@@ -1,8 +1,8 @@
 ﻿namespace Client.Code
 {
     using System.Diagnostics;
-    using Contract;
     using SimpleInjector;
+    using Contract;
 
     public sealed class DynamicQueryProcessor : IQueryProcessor
     {

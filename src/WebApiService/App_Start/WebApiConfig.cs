@@ -1,9 +1,9 @@
 ﻿namespace WebApiService
 {
     using System.Web.Http;
-    using Code;
     using Newtonsoft.Json.Serialization;
     using SimpleInjector;
+    using Code;
 
     public static class WebApiConfig
     {
