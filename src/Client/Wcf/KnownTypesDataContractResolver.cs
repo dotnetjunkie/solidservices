@@ -24,11 +24,25 @@
         public override Type ResolveName(string typeName, string typeNamespace, Type declaredType,
             DataContractResolver knownTypeResolver)
         {
-            Type type;
+            try
+            {
+                Type type;
 
-            return this.knownTypes.TryGetValue(typeName, out type)
-                ? type
-                : knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
+                return this.knownTypes.TryGetValue(typeName, out type)
+                    ? type
+                    : knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"Unable to resolve type {typeName}. {ex.InnerException} " +
+                    "If the given type name is postfixed with a weird base64 encoded value, it means that " +
+                    "the type is a generic type. WCF postfixes the name with a hash based on the " +
+                    "namespaces of the generic type arguments. To fix this, mark the class with the " +
+                    "DataContractAttribute to force a specific name. Example:" +
+                    "[DataContract(Name = nameof(YourType<T>) + \"Of{0}\")]. And don't forget to mark the type's " +
+                    "properties with the DataMemberAttribute.", ex);
+            }            
         }
 
         [DebuggerStepThrough]
