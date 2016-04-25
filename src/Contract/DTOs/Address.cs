@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Contract.DTOs
+﻿namespace Contract.DTOs
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class Address
     {
         [Required(AllowEmptyStrings = false)]

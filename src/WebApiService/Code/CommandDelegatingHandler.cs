@@ -50,7 +50,7 @@
             // GetDependencyScope() calls IDependencyResolver.BeginScope internally.
             request.GetDependencyScope();
 
-            ApplyHeaders(request);
+            this.ApplyHeaders(request);
 
             dynamic handler = this.handlerFactory.Invoke(handlerType);
 

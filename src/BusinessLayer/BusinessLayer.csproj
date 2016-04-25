@@ -55,7 +55,6 @@
     <Compile Include="CommandHandlers\CreateOrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\ShipOrderCommandHandler.cs" />
     <Compile Include="CrossCuttingConcerns\AuthorizationCommandHandlerDecorator.cs" />
-    <Compile Include="CrossCuttingConcerns\AuthorizationException.cs" />
     <Compile Include="CrossCuttingConcerns\AuthorizationQueryHandlerDecorator.cs" />
     <Compile Include="CrossCuttingConcerns\DataAnnotationsValidator.cs" />
     <Compile Include="CrossCuttingConcerns\ValidationCommandHandlerDecorator.cs" />

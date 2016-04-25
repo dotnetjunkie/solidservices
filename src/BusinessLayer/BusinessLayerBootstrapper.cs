@@ -15,8 +15,8 @@
     // concern, create a specific BusinessLayer.Bootstrap project with this class.
     public static class BusinessLayerBootstrapper
     {
-        private static Assembly[] ContractAssemblies = new[] { typeof(IQuery<>).Assembly };
-        private static Assembly[] BusinessLayerAssemblies = new [] { Assembly.GetExecutingAssembly() };
+        private static Assembly[] contractAssemblies = new[] { typeof(IQuery<>).Assembly };
+        private static Assembly[] businessLayerAssemblies = new[] { Assembly.GetExecutingAssembly() };
 
         public static void Bootstrap(Container container)
         {
@@ -27,22 +27,22 @@
 
             container.RegisterSingleton<IValidator>(new DataAnnotationsValidator(container));
             
-            container.Register(typeof(ICommandHandler<>), BusinessLayerAssemblies);
+            container.Register(typeof(ICommandHandler<>), businessLayerAssemblies);
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(AuthorizationCommandHandlerDecorator<>));
 
-            container.Register(typeof(IQueryHandler<,>), BusinessLayerAssemblies);
+            container.Register(typeof(IQueryHandler<,>), businessLayerAssemblies);
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(AuthorizationQueryHandlerDecorator<,>));
         }
         
         public static IEnumerable<Type> GetCommandTypes() =>
-            from assembly in ContractAssemblies
+            from assembly in contractAssemblies
             from type in assembly.GetExportedTypes()
             where type.Name.EndsWith("Command")
             select type;
 
         public static IEnumerable<QueryInfo> GetQueryTypes() =>
-            from assembly in ContractAssemblies
+            from assembly in contractAssemblies
             from type in assembly.GetExportedTypes()
             where QueryInfo.IsQuery(type)
             select new QueryInfo(type);

@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ServiceModel;
-
-namespace WcfService.Code
+﻿namespace WcfService.Code
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ServiceModel;
+
     public static class WcfExceptionTranslator
     {
         public static FaultException CreateFaultExceptionOrNull(Exception exception)

@@ -23,13 +23,13 @@
         public void ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint,
             ClientRuntime clientRuntime)
         {
-            CreateMyDataContractSerializerOperationBehaviors(contractDescription);
+            this.CreateMyDataContractSerializerOperationBehaviors(contractDescription);
         }
 
         public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint,
             DispatchRuntime dispatchRuntime)
         {
-            CreateMyDataContractSerializerOperationBehaviors(contractDescription);
+            this.CreateMyDataContractSerializerOperationBehaviors(contractDescription);
         }
 
         public void Validate(ContractDescription contractDescription, ServiceEndpoint endpoint)
@@ -40,7 +40,7 @@
         {
             foreach (OperationDescription operationDescription in description.Operations)
             {
-                CreateMyDataContractSerializerOperationBehavior(operationDescription);
+                this.CreateMyDataContractSerializerOperationBehavior(operationDescription);
             }
         }
 

@@ -3,13 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
-    using System.Reflection;
     using System.Security.Principal;
     using System.Threading;
     using System.Web;
     using BusinessLayer;
-    using Contract;
     using SimpleInjector;
     using SimpleInjector.Integration.WebApi;
 
@@ -28,7 +25,7 @@
             BusinessLayerBootstrapper.Bootstrap(container);
 
             container.RegisterSingleton<IPrincipal>(new HttpContextPrincipal());
-            container.RegisterSingleton<ILogger, DebugLogger>();
+            container.RegisterSingleton<ILogger>(new DebugLogger());
 
             container.Verify();
 
@@ -37,17 +34,17 @@
 
         private sealed class HttpContextPrincipal : IPrincipal
         {
-            private IPrincipal Principal => HttpContext.Current.User ?? Thread.CurrentPrincipal;
             public IIdentity Identity => this.Principal.Identity;
+            private IPrincipal Principal => HttpContext.Current.User ?? Thread.CurrentPrincipal;
             public bool IsInRole(string role) => this.Principal.IsInRole(role);
         }
-    }
 
-    public sealed class DebugLogger : ILogger
-    {
-        public void Log(string message)
+        private sealed class DebugLogger : ILogger
         {
-            Debug.WriteLine(message);
+            public void Log(string message)
+            {
+                Debug.WriteLine(message);
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Kernel;
-
-namespace WebApiService.Code
+﻿namespace WebApiService.Code
 {
+    using System;
+    using Ploeh.AutoFixture;
+    using Ploeh.AutoFixture.Kernel;
+
     public static class ExampleObjectCreator
     {
         public static object Create(Type type)

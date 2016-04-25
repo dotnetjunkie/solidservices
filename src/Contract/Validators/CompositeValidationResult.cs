@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Contract.Validators
+﻿namespace Contract.Validators
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class CompositeValidationResult : ValidationResult, IEnumerable<ValidationResult>
     {
         public CompositeValidationResult(string errorMessage, IEnumerable<ValidationResult> results) 

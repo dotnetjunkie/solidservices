@@ -38,7 +38,7 @@
 
             // GET operations get their data through the query string, while POST operations expect a JSON
             // object being put in the body.
-            string queryData =  request.Method == HttpMethod.Get
+            string queryData = request.Method == HttpMethod.Get
                 ? SerializationHelpers.ConvertQueryStringToJson(request.RequestUri.Query)
                 : await request.Content.ReadAsStringAsync();
 
@@ -49,7 +49,7 @@
             // GetDependencyScope() calls IDependencyResolver.BeginScope internally.
             request.GetDependencyScope();
 
-            ApplyHeaders(request);
+            this.ApplyHeaders(request);
 
             dynamic handler = this.handlerFactory.Invoke(handlerType);
 
@@ -96,7 +96,7 @@
         private static dynamic DeserializeQuery(HttpRequestMessage request, string json, Type queryType) =>
             JsonConvert.DeserializeObject(json, queryType, GetJsonFormatter(request).SerializerSettings);
 
-        private static JsonMediaTypeFormatter GetJsonFormatter(HttpRequestMessage request) => 
+        private static JsonMediaTypeFormatter GetJsonFormatter(HttpRequestMessage request) =>
             request.GetConfiguration().Formatters.JsonFormatter;
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Contract.Queries;
-
-namespace BusinessLayer
+﻿namespace BusinessLayer
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Contract.Queries;
+
     public static class PagingExtensions
     {
         public static Paged<T> Page<T>(this IEnumerable<T> collection, PageInfo paging) => new Paged<T>

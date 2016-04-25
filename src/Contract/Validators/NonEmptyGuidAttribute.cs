@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace Contract.Validators
+﻿namespace Contract.Validators
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
     public class NonEmptyGuidAttribute : ValidationAttribute
     {
