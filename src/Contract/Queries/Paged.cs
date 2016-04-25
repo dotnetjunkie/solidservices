@@ -1,9 +1,14 @@
 ﻿namespace Contract.Queries
 {
+    using System.Runtime.Serialization;
+
+    // Applying the DataContract attribute to generic types prevents WCF from postfixing the closed-generic 
+    // type name with a seemingly random hexadecimal code.
+    [DataContract(Name = "PagedOf{0}")]
     public class Paged<T>
     {
-        public PageInfo Paging { get; set; }
+        [DataMember] public PageInfo Paging { get; set; }
 
-        public T[] Items { get; set; }
+        [DataMember] public T[] Items { get; set; }
     }
 }

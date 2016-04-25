@@ -7,7 +7,7 @@
     using System.Runtime.Serialization;
     using System.Xml;
 
-    // source: https://msdn.microsoft.com/en-us/library/dd807519%28v=vs.110%29.aspx#
+    // source: https://msdn.microsoft.com/en-us/library/dd807519%28v=vs.110%29.aspx
     public sealed class KnownTypesDataContractResolver : DataContractResolver
     {
         private readonly Dictionary<string, Type> knownTypes;
@@ -24,13 +24,9 @@
         public override Type ResolveName(string typeName, string typeNamespace, Type declaredType,
             DataContractResolver knownTypeResolver)
         {
-            bool genericTypeName = typeName.Contains("mX0E");
-
-            string knownTypeName = genericTypeName ? typeName.Substring(0, typeName.IndexOf("mX0E")) : typeName;
-
             Type type;
 
-            return this.knownTypes.TryGetValue(knownTypeName, out type)
+            return this.knownTypes.TryGetValue(typeName, out type)
                 ? type
                 : knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
         }
