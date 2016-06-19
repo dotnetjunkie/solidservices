@@ -18,7 +18,7 @@
             var propertyNames =
                 from key in dictionary.Keys
                 let index = key.IndexOf('.')
-                select index < 0 ? key : key.Substring(index + 1);
+                select index < 0 ? key : key.Substring(0, index);
 
             var data =
                 from propertyName in propertyNames.Distinct()
