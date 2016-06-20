@@ -25,7 +25,7 @@
                 let json = dictionary.ContainsKey(propertyName)
                     ? HttpUtility.JavaScriptStringEncode(dictionary[propertyName], true)
                     : ConvertDictionaryToJson(FilterByPropertyName(dictionary, propertyName))
-                select propertyName + ": " + json;
+                select HttpUtility.JavaScriptStringEncode(propertyName, true) + ": " + json;
 
             return "{ " + string.Join(", ", data) + " }";
         }
