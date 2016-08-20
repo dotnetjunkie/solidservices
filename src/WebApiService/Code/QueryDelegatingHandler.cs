@@ -53,10 +53,10 @@
 
             dynamic handler = this.handlerFactory.Invoke(handlerType);
 
-            dynamic query = DeserializeQuery(request, queryData, info.QueryType);
-
             try
             {
+                dynamic query = DeserializeQuery(request, queryData, info.QueryType);
+
                 object result = handler.Handle(query);
 
                 return CreateResponse(result, info.ResultType, HttpStatusCode.OK, request);

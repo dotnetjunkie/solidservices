@@ -9,6 +9,7 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security;
+    using Newtonsoft.Json;
 
     // Allows translating exceptions thrown by the business layer to HttpResponseExceptions. 
     // This allows returning useful error information to the client.
@@ -17,6 +18,12 @@
         public static HttpResponseMessage CreateErrorResponseOrNull(Exception thrownException, 
             HttpRequestMessage request)
         {
+            if (thrownException is JsonSerializationException)
+            {
+                // Return when the supplied model (command or query) can't be deserialized.
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, thrownException.Message);
+            }
+
             // Here are some examples of how certain exceptions can be mapped to error responses.
             if (thrownException is ValidationException)
             {

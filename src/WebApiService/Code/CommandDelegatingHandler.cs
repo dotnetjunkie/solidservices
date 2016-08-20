@@ -30,17 +30,18 @@
         {
             string commandName = request.GetRouteData().Values["command"].ToString();
 
+            if (request.Method != HttpMethod.Post)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.MethodNotAllowed,
+                    "The requested resource does not support http method '" + request.Method + "'.");
+            }
+
             if (!this.commandTypes.ContainsKey(commandName))
             {
                 return new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound, RequestMessage = request };
             }
 
             Type commandType = this.commandTypes[commandName];
-
-            if (request.Method == HttpMethod.Get)
-            {
-                return GetExampleMessage(commandType, request);
-            }
 
             string commandData = await request.Content.ReadAsStringAsync();
 
@@ -53,10 +54,10 @@
 
             dynamic handler = this.handlerFactory.Invoke(handlerType);
 
-            dynamic command = DeserializeCommand(request, commandData, commandType);
-
             try
             {
+                dynamic command = DeserializeCommand(request, commandData, commandType);
+
                 handler.Handle(command);
 
                 return new HttpResponseMessage { StatusCode = HttpStatusCode.OK, RequestMessage = request };
@@ -80,18 +81,6 @@
             // so the values are accessible during execution of the command.
             string sessionId = request.Headers.GetValueOrNull("sessionId");
             string token = request.Headers.GetValueOrNull("CSRF-token");
-        }
-
-        private static HttpResponseMessage GetExampleMessage(Type commandType, HttpRequestMessage request)
-        {
-            object command = ExampleObjectCreator.Create(commandType);
-
-            return new HttpResponseMessage
-            {
-                Content = new ObjectContent(commandType, command, GetJsonFormatter(request)),
-                StatusCode = HttpStatusCode.MethodNotAllowed,
-                RequestMessage = request
-            };
         }
 
         private static object DeserializeCommand(HttpRequestMessage request, string json, Type commandType) =>
