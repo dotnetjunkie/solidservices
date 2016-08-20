@@ -1,27 +1,25 @@
 ﻿namespace BusinessLayer.CrossCuttingConcerns
 {
+    using System;
     using Contract;
 
     public class ValidationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
     {
-        private readonly ICommandHandler<TCommand> handler;
         private readonly IValidator validator;
-        private readonly ILogger logger;
+        private readonly ICommandHandler<TCommand> handler;
 
-        public ValidationCommandHandlerDecorator(ICommandHandler<TCommand> handler, 
-            IValidator validator, ILogger logger)
+        public ValidationCommandHandlerDecorator(IValidator validator, ICommandHandler<TCommand> handler)
         {
-            this.handler = handler;
             this.validator = validator;
-            this.logger = logger;
+            this.handler = handler;
         }
 
         void ICommandHandler<TCommand>.Handle(TCommand command)
         {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
             // validate the supplied command.
             this.validator.ValidateObject(command);
-
-            this.logger.Log(typeof(TCommand).Name + " is valid.");
 
             // forward the (valid) command to the real command handler.
             this.handler.Handle(command);

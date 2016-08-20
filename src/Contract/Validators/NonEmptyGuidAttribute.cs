@@ -4,10 +4,9 @@
     using System.ComponentModel.DataAnnotations;
 
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-    public class NonEmptyGuidAttribute : ValidationAttribute
+    public class NonEmptyGuidAttribute : RequiredAttribute
     {
         public NonEmptyGuidAttribute()
-            : base("The {0} field is required.")
         {
         }
 
@@ -15,7 +14,7 @@
         {
             if (value == null)
             {
-                return true;
+                return false;
             }
 
             if (!(value is Guid))

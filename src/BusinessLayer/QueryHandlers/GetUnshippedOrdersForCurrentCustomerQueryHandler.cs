@@ -20,8 +20,8 @@
 
         public Paged<OrderInfo> Handle(GetUnshippedOrdersForCurrentCustomerQuery query)
         {
-            this.logger.Log(string.Format("{0} {{ PageIndex = {1}, PageSize = {2} }}",
-                query.GetType().Name, query.Paging.PageIndex, query.Paging.PageSize));
+            this.logger.Log(string.Format("{0} {{ Paging = {{ PageIndex = {1}, PageSize = {2} }} }}",
+                query.GetType().Name, query.Paging?.PageIndex, query.Paging?.PageSize));
 
             return GetAllOrders().Page(query.Paging);
         }
