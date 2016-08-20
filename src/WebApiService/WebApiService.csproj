@@ -77,8 +77,8 @@
       <HintPath>..\packages\SimpleInjector.Integration.WebApi.3.1.0\lib\net45\SimpleInjector.Integration.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SolidServices.Controllerless.WebApi.Description, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SolidServices.Controllerless.WebApi.Description.0.1.0\lib\net45\SolidServices.Controllerless.WebApi.Description.dll</HintPath>
+    <Reference Include="SolidServices.Controllerless.WebApi.Description, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SolidServices.Controllerless.WebApi.Description.0.1.2\lib\net45\SolidServices.Controllerless.WebApi.Description.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">

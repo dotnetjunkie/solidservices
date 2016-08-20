@@ -53,14 +53,11 @@
 
         private static void UseControllerlessApiDocumentation(HttpConfiguration config)
         {
-            var provider = new XmlDocumentationTypeDescriptionProvider(HostingEnvironment.MapPath("~/App_Data/Contract.xml"));
-
             var queryApiExplorer = new ControllerlessApiExplorer(
                 messageTypes: Bootstrapper.GetKnownQueryTypes().Select(t => t.QueryType),
-                controllerName: "queries",
-                typeDescriptionSelector: provider.GetDescription,
                 responseTypeSelector: type => new QueryInfo(type).ResultType)
             {
+                ControllerName = "queries",
                 ParameterSourceSelector = type => ApiParameterSource.FromUri,
                 HttpMethodSelector = type => HttpMethod.Get,
                 ActionNameSelector = type => type.Name.Replace("Query", string.Empty)
@@ -68,10 +65,9 @@
 
             var commandApiExplorer = new ControllerlessApiExplorer(
                 messageTypes: Bootstrapper.GetKnownCommandTypes(),
-                controllerName: "commands",
-                typeDescriptionSelector: provider.GetDescription,
                 responseTypeSelector: type => typeof(void))
             {
+                ControllerName = "commands",
                 ParameterName = "command",
                 ActionNameSelector = type => type.Name.Replace("Command", string.Empty),
             };
