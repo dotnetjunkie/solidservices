@@ -1,4 +1,6 @@
-﻿namespace WebApiService.Code
+﻿using System.Web.Http;
+
+namespace WebApiService.Code
 {
     using System;
     using System.Collections.Generic;
@@ -85,9 +87,17 @@
         private static HttpResponseMessage CreateResponse(object data, Type dataType, HttpStatusCode code,
             HttpRequestMessage request)
         {
+            var configuration = request.GetConfiguration();
+
+            IContentNegotiator negotiator = configuration.Services.GetContentNegotiator();
+            ContentNegotiationResult result = negotiator.Negotiate(dataType, request, configuration.Formatters);
+
+            var bestMatchFormatter = result.Formatter;
+            var mediaType = result.MediaType.MediaType;
+
             return new HttpResponseMessage
             {
-                Content = new ObjectContent(dataType, data, GetJsonFormatter(request)),
+                Content = new ObjectContent(dataType, data, bestMatchFormatter, mediaType),
                 StatusCode = code,
                 RequestMessage = request
             };
