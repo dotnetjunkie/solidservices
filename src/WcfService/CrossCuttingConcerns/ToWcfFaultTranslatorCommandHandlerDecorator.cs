@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ServiceModel;
-    using Contract;
+    using BusinessLayer;
 
     public class ToWcfFaultTranslatorCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
     {

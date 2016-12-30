@@ -1,4 +1,4 @@
-﻿namespace Contract
+﻿namespace BusinessLayer
 {
     public interface ICommandHandler<TCommand>
     {

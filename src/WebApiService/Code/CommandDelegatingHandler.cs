@@ -8,7 +8,7 @@
     using System.Net.Http.Formatting;
     using System.Threading;
     using System.Threading.Tasks;
-    using Contract;
+    using BusinessLayer;
     using Newtonsoft.Json;
 
     public sealed class CommandDelegatingHandler : DelegatingHandler
