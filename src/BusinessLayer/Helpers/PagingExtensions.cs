@@ -6,16 +6,26 @@
 
     public static class PagingExtensions
     {
-        public static Paged<T> Page<T>(this IEnumerable<T> collection, PageInfo paging) => new Paged<T>
+        public static Paged<T> Page<T>(this IEnumerable<T> collection, PageInfo paging)
         {
-            Items = collection.Skip(paging.PageIndex * paging.PageSize).Take(paging.PageSize).ToArray(),
-            Paging = paging,
-        };
+            paging = paging ?? new PageInfo();
 
-        public static Paged<T> Page<T>(this IQueryable<T> collection, PageInfo paging) => new Paged<T>
+            return new Paged<T>
+            {
+                Items = collection.Skip(paging.PageIndex * paging.PageSize).Take(paging.PageSize).ToArray(),
+                Paging = paging,
+            };
+        }
+
+        public static Paged<T> Page<T>(this IQueryable<T> collection, PageInfo paging)
         {
-            Items = collection.Skip(paging.PageIndex * paging.PageSize).Take(paging.PageSize).ToArray(),
-            Paging = paging,
-        };
+            paging = paging ?? new PageInfo();
+
+            return new Paged<T>
+            {
+                Items = collection.Skip(paging.PageIndex * paging.PageSize).Take(paging.PageSize).ToArray(),
+                Paging = paging,
+            };
+        }
     }
 }

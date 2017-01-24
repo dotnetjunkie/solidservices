@@ -7,6 +7,6 @@
     /// </summary>
     public class GetUnshippedOrdersForCurrentCustomerQuery : IQuery<Paged<OrderInfo>>
     {
-        public PageInfo Paging { get; set; } = new PageInfo();
+        public PageInfo Paging { get; set; }
     }
 }
