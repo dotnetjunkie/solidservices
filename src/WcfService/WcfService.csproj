@@ -89,6 +89,7 @@
   <ItemGroup>
     <Content Include="CommandService.svc" />
     <Content Include="Global.asax" />
+    <Content Include="NonDotNetQueryService.svc" />
     <Content Include="QueryService.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
