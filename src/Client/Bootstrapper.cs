@@ -4,7 +4,6 @@
     using Client.CrossCuttingConcerns;
     using Contract;
     using SimpleInjector;
-    using SimpleInjector.Extensions;
 
     public static class Bootstrapper
     {

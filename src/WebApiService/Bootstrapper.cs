@@ -8,7 +8,7 @@
     using System.Web;
     using BusinessLayer;
     using SimpleInjector;
-    using SimpleInjector.Integration.WebApi;
+    using SimpleInjector.Lifestyles;
 
     public static class Bootstrapper
     {
@@ -20,7 +20,7 @@
         {
             var container = new Container();
 
-            container.Options.DefaultScopedLifestyle = new WebApiRequestLifestyle();
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             BusinessLayerBootstrapper.Bootstrap(container);
 

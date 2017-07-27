@@ -12,6 +12,7 @@ using WebApiService;
 
 namespace WebApiService
 {
+    // NOTE: To see Swagger in action, view this Web API in your browser: http://localhost:2591/swagger/
     public static class SwaggerConfig
     {
         public static void Register()
