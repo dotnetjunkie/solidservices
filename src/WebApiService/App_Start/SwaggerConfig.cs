@@ -1,3 +1,6 @@
+using System.Configuration;
+using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -24,14 +27,33 @@ namespace WebApiService
             {
                 c.SingleApiVersion("v1", "SOLID Services API");
 
-                string xmlCommentsPath = HostingEnvironment.MapPath("~/App_Data/Contract.xml");
-
-                c.IncludeXmlComments(xmlCommentsPath);
-
-                var filter = new ControllerlessActionOperationFilter(xmlCommentsPath);
-                c.OperationFilter(() => filter);
+                IncludeXmlCommentsFromAppDataFolder(c);
             })
             .EnableSwaggerUi(c => { });
+        }
+
+        private static void IncludeXmlCommentsFromAppDataFolder(SwaggerDocsConfig c)
+        {
+            var appDataPath = HostingEnvironment.MapPath("~/App_Data");
+            
+            string[] paths = Directory.GetFiles(appDataPath, "*.xml");
+
+            foreach (string xmlCommentsPath in paths)
+            {
+                IncludeXmlComments(c, xmlCommentsPath);
+            }
+
+            if (!paths.Any())
+            {
+                throw new ConfigurationErrorsException("No .xml files were found in the App_Data folder.");
+            }
+        }
+
+        private static void IncludeXmlComments(SwaggerDocsConfig c, string xmlCommentsPath)
+        {
+            c.IncludeXmlComments(xmlCommentsPath);
+            var filter = new ControllerlessActionOperationFilter(xmlCommentsPath);
+            c.OperationFilter(() => filter);
         }
 
         private sealed class ControllerlessActionOperationFilter : IOperationFilter
