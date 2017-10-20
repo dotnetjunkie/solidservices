@@ -14,15 +14,11 @@
 
         public KnownTypesDataContractResolver(IEnumerable<Type> types)
         {
-            this.knownTypes = (
-                from type in types.Distinct()
-                group type by type.Name into g
-                select g.First())
-                .ToDictionary(GetName);
+            this.knownTypes = types.Distinct().ToDictionary(GetName);
         }
 
-        public override Type ResolveName(string typeName, string typeNamespace, Type declaredType,
-            DataContractResolver knownTypeResolver)
+        public override Type ResolveName(
+            string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)
         {
             try
             {
