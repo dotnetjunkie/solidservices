@@ -23,7 +23,7 @@
 
             BusinessLayerBootstrapper.Bootstrap(container);
 
-            container.RegisterInstance<IPrincipal>(new HttpContextPrincipal());
+            container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
             container.RegisterInstance<ILogger>(new DebugLogger());
 
             container.Verify();
@@ -33,9 +33,14 @@
 
         private sealed class HttpContextPrincipal : IPrincipal
         {
+            private readonly IHttpContextAccessor httpContextAccessor;
+
+            public HttpContextPrincipal(IHttpContextAccessor httpContextAccessor)
+            {
+                this.httpContextAccessor = httpContextAccessor;
+            }
             public IIdentity Identity => this.Principal.Identity;
-            //private IPrincipal Principal => HttpContext.Current.User ?? Thread.CurrentPrincipal;//TODO - inject a principal??
-            private IPrincipal Principal => new GenericPrincipal(new GenericIdentity("generic"), new string[0]);//Thread.CurrentPrincipal;
+            private IPrincipal Principal => this.httpContextAccessor.HttpContext.User;
             public bool IsInRole(string role) => this.Principal.IsInRole(role);
         }
 
