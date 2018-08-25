@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{9F659AB9-6E1D-47EE-8DF8-EC7C593129D7}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{5E9B468D-FD1B-4AE5-8A10-C9B09CE2690C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiService", "WebApiService\WebApiService.csproj", "{B71A8419-1827-48A4-913E-467B52A7C2F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCoreService", "WebCoreService\WebCoreService.csproj", "{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,8 +83,23 @@ Global
 		{B71A8419-1827-48A4-913E-467B52A7C2F1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B71A8419-1827-48A4-913E-467B52A7C2F1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B71A8419-1827-48A4-913E-467B52A7C2F1}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Debug|x86.Build.0 = Debug|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57B78032-8930-4257-B608-F0610294E5DE}
 	EndGlobalSection
 EndGlobal
