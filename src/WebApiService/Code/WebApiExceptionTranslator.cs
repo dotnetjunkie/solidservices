@@ -15,7 +15,7 @@
     // This allows returning useful error information to the client.
     public static class WebApiErrorResponseBuilder
     {
-        public static HttpResponseMessage CreateErrorResponseOrNull(Exception thrownException, 
+        public static HttpResponseMessage CreateErrorResponseOrNull(Exception thrownException,
             HttpRequestMessage request)
         {
             if (thrownException is JsonSerializationException)

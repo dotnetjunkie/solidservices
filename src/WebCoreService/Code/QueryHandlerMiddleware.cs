@@ -68,7 +68,9 @@
                 }
             }
             else
+            {
                 await context.WriteResultAsync(new NotFoundObjectResult(queryName));
+            }
         }
 
         private void ApplyHeaders(HttpRequest request)
