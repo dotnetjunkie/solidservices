@@ -4,10 +4,9 @@ The Highly Maintainable Web Services project is a reference architecture applica
 
 This project contains no documentation, just code. Please visit the following article for the reasoning behind this project:
 
-* [Writing Highly Maintainable WCF services](https://www.cuttingedge.it/blogs/steven/pivot/entry.php?id=95)
+* [Writing Highly Maintainable WCF services](https://blogs.cuttingedge.it/steven/posts/2012/writing-highly-maintainable-wcf-services/)
 
 For more background about the used design, please read the following articles:
 
-* [Meanwhile… on the command side of my architecture](https://www.cuttingedge.it/blogs/steven/pivot/entry.php?id=91)
-* [Meanwhile… on the query side of my architecture](https://www.cuttingedge.it/blogs/steven/pivot/entry.php?id=92)
-
+* [Meanwhile… on the command side of my architecture](https://blogs.cuttingedge.it/steven/posts/2011/meanwhile-on-the-command-side-of-my-architecture/)
+* [Meanwhile… on the query side of my architecture](https://blogs.cuttingedge.it/steven/posts/2011/meanwhile-on-the-query-side-of-my-architecture/)
