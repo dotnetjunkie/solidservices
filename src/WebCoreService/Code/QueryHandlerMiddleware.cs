@@ -14,16 +14,22 @@
 
     public sealed class QueryHandlerMiddleware : IMiddleware
     {
+        private static readonly Dictionary<string, QueryInfo> QueryTypes;
         private readonly Func<Type, object> handlerFactory;
-        private readonly Dictionary<string, QueryInfo> queryTypes;
+        private readonly JsonSerializerSettings jsonSettings;
 
-        public QueryHandlerMiddleware(Container container)
+        static QueryHandlerMiddleware()
         {
-            this.handlerFactory = container.GetInstance;
-            this.queryTypes = Bootstrapper.GetKnownQueryTypes().ToDictionary(
+            QueryTypes = Bootstrapper.GetKnownQueryTypes().ToDictionary(
                 info => info.QueryType.Name.Replace("Query", string.Empty),
                 info => info,
                 StringComparer.OrdinalIgnoreCase);
+        }
+
+        public QueryHandlerMiddleware(Container container, JsonSerializerSettings jsonSettings)
+        {
+            this.handlerFactory = container.GetInstance;
+            this.jsonSettings = jsonSettings;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -32,7 +38,7 @@
 
             string queryName = GetQueryName(request);
 
-            if (this.queryTypes.ContainsKey(queryName))
+            if (QueryTypes.ContainsKey(queryName))
             {
                 // GET operations get their data through the query string, while POST operations expect a JSON
                 // object being put in the body.
@@ -40,7 +46,7 @@
                     ? SerializationHelpers.ConvertQueryStringToJson(request.QueryString.Value)
                     : request.Body.ReadToEnd();
 
-                QueryInfo info = this.queryTypes[queryName];
+                QueryInfo info = QueryTypes[queryName];
 
                 Type handlerType = typeof(IQueryHandler<,>).MakeGenericType(info.QueryType, info.ResultType);
 
@@ -50,7 +56,10 @@
 
                 try
                 {
-                    dynamic query = JsonConvert.DeserializeObject(queryData, info.QueryType);//TODO - need to get the JSONSerializer settings object from somewhere
+                    dynamic query = JsonConvert.DeserializeObject(
+                        string.IsNullOrWhiteSpace(queryData) ? "{}" : queryData,
+                        info.QueryType,
+                        this.jsonSettings);
 
                     object result = handler.Handle(query);
 
@@ -58,13 +67,17 @@
                 }
                 catch (Exception exception)
                 {
-                    ObjectResult response = WebApiErrorResponseBuilder.CreateErrorResponseOrNull(exception, request);
+                    ObjectResult response =
+                        WebApiErrorResponseBuilder.CreateErrorResponseOrNull(exception, context);
+
                     if (response != null)
                     {
                         await context.WriteResultAsync(response);
                     }
-
-                    throw;
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
             else
@@ -85,9 +98,7 @@
         private static string GetQueryName(HttpRequest request)
         {
             Uri requestUri = new Uri(request.GetEncodedUrl());
-            string segment = requestUri.Segments.LastOrDefault();
-
-            return segment;
+            return requestUri.Segments.LastOrDefault();
         }
     }
 }

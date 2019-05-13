@@ -6,13 +6,6 @@
 
     public class DataAnnotationsValidator : IValidator
     {
-        private readonly IServiceProvider container;
-
-        public DataAnnotationsValidator(IServiceProvider container)
-        {
-            this.container = container;
-        }
-
         [DebuggerStepThrough]
         void IValidator.ValidateObject(object instance)
         {

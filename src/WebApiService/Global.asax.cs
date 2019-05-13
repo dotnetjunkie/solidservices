@@ -15,6 +15,8 @@
 
             var container = Bootstrapper.Bootstrap();
 
+            container.Verify();
+
             WebApiConfig.Register(GlobalConfiguration.Configuration, container);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

@@ -6,54 +6,61 @@ namespace WebCoreService
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Controllers;
-    using Microsoft.AspNetCore.Mvc.ViewComponents;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using SimpleInjector;
-    using SimpleInjector.Integration.AspNetCore.Mvc;
-    using SimpleInjector.Lifestyles;
 
     public class Startup
     {
         private readonly Container container = new Container();
 
+        private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+
+#if DEBUG
+            Formatting = Formatting.Indented,
+#endif
+        };
+
         public Startup(IConfiguration configuration)
         {
+            container.Options.ResolveUnregisteredConcreteTypes = false;
+
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            IntegrateSimpleInjector(services);
+            // We need to—at least—call AddMvcCore, because it registers 11 implementations of the
+            // IActionResultExecutor<TResult> interface. Those are required by the HttpContextExtensions
+            // method.
+            services
+                .AddMvcCore()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSimpleInjector(this.container, options =>
+            {
+                options.AddAspNetCore();
+            });
         }
 
-        private void IntegrateSimpleInjector(IServiceCollection services)
-        {
-            this.container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddSingleton<IControllerActivator>(new SimpleInjectorControllerActivator(this.container));
-            services.AddSingleton<IViewComponentActivator>(new SimpleInjectorViewComponentActivator(this.container));
-
-            services.EnableSimpleInjectorCrossWiring(this.container);
-            services.UseSimpleInjectorAspNetRequestScoping(this.container);
-
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            Bootstrapper.Bootstrap(this.container, app);
+            app.UseSimpleInjector(this.container);
 
-            // Add custom middleware
-            app.Map("/api/queries", builder => builder.UseMiddleware<QueryHandlerMiddleware>(this.container));
-            app.Map("/api/commands", builder => builder.UseMiddleware<CommandHandlerMiddleware>(this.container));
+            Bootstrapper.Bootstrap(this.container);
+
+            // Map routes to the middleware for query handling and command handling
+            app.Map("/api/queries",
+                b => UseMiddleware(b, new QueryHandlerMiddleware(this.container, JsonSettings)));
+
+            app.Map("/api/commands",
+                b => UseMiddleware(b, new CommandHandlerMiddleware(this.container, JsonSettings)));
 
             this.container.Verify();
 
@@ -64,5 +71,8 @@ namespace WebCoreService
 
             app.UseMvc();
         }
+
+        private static void UseMiddleware(IApplicationBuilder app, IMiddleware middleware) =>
+            app.Use((c, next) => middleware.InvokeAsync(c, _ => next()));
     }
 }

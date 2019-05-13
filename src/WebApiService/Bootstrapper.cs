@@ -27,8 +27,6 @@
             container.RegisterSingleton<IPrincipal>(new HttpContextPrincipal());
             container.RegisterSingleton<ILogger>(new DebugLogger());
 
-            container.Verify();
-
             return container;
         }
 

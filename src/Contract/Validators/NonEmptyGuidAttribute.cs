@@ -3,13 +3,11 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    /// <inheritdoc />
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
     public class NonEmptyGuidAttribute : RequiredAttribute
     {
-        public NonEmptyGuidAttribute()
-        {
-        }
-
+        /// <inheritdoc />
         public override bool IsValid(object value)
         {
             if (value == null)

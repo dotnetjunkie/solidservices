@@ -1,7 +1,6 @@
 ﻿namespace BusinessLayer.CrossCuttingConcerns
 {
     using System;
-    using Contract;
 
     public class ValidationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
     {

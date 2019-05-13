@@ -9,15 +9,14 @@
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.DependencyInjection;
 
-    //https://github.com/aspnet/Mvc/issues/7238#issuecomment-357391426
+    // https://github.com/aspnet/Mvc/issues/7238#issuecomment-357391426
     public static class HttpContextExtensions
     {
-        private static readonly RouteData emptyRouteData = new RouteData();
+        private static readonly RouteData EmptyRouteData = new RouteData();
+        private static readonly ActionDescriptor EmptyActionDescriptor = new ActionDescriptor();
 
-        private static readonly ActionDescriptor emptyActionDescriptor = new ActionDescriptor();
-        //TODO - need to ensure that any IActionResult works here or need to change to only allow ObjectResult
         public static Task WriteResultAsync<TResult>(this HttpContext context, TResult result)
-            where TResult : IActionResult
+            where TResult : ObjectResult
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -28,9 +27,9 @@
                 throw new InvalidOperationException(
                     $"No result executor for '{typeof(TResult).FullName}' has been registered.");
 
-            var routeData = context.GetRouteData() ?? emptyRouteData;
+            var routeData = context.GetRouteData() ?? EmptyRouteData;
 
-            var actionContext = new ActionContext(context, routeData, emptyActionDescriptor);
+            var actionContext = new ActionContext(context, routeData, EmptyActionDescriptor);
 
             return executor.ExecuteAsync(actionContext, result);
         }

@@ -4,9 +4,10 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    /// <inheritdoc />
     public class CompositeValidationResult : ValidationResult, IEnumerable<ValidationResult>
     {
-        public CompositeValidationResult(string errorMessage, IEnumerable<ValidationResult> results) 
+        public CompositeValidationResult(string errorMessage, IEnumerable<ValidationResult> results)
             : base(errorMessage)
         {
             this.Results = results;

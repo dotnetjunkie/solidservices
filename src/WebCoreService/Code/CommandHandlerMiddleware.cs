@@ -13,16 +13,23 @@
 
     public sealed class CommandHandlerMiddleware : IMiddleware
     {
-        private readonly Func<Type, object> handlerFactory;
-        private readonly Dictionary<string, Type> commandTypes;
+        private static readonly Dictionary<string, Type> CommandTypes;
 
-        public CommandHandlerMiddleware(Container container)
+        private readonly Func<Type, object> handlerFactory;
+        private readonly JsonSerializerSettings jsonSettings;
+
+        static CommandHandlerMiddleware()
         {
-            this.handlerFactory = container.GetInstance;
-            this.commandTypes = Bootstrapper.GetKnownCommandTypes().ToDictionary(
+            CommandTypes = Bootstrapper.GetKnownCommandTypes().ToDictionary(
                 keySelector: type => type.Name.Replace("Command", string.Empty),
                 elementSelector: type => type,
                 comparer: StringComparer.OrdinalIgnoreCase);
+        }
+
+        public CommandHandlerMiddleware(Container container, JsonSerializerSettings jsonSettings)
+        {
+            this.handlerFactory = container.GetInstance;
+            this.jsonSettings = jsonSettings;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -31,9 +38,9 @@
 
             string commandName = GetCommandName(request);
 
-            if (this.commandTypes.ContainsKey(commandName))
+            if (request.Method == "POST" && CommandTypes.ContainsKey(commandName))
             {
-                Type commandType = this.commandTypes[commandName];
+                Type commandType = CommandTypes[commandName];
 
                 string commandData = request.Body.ReadToEnd();
 
@@ -45,28 +52,35 @@
 
                 try
                 {
-                    dynamic command = JsonConvert.DeserializeObject(commandData, commandType);//TODO - need to get the JSONSerializer settings object from somewhere
+                    dynamic command = JsonConvert.DeserializeObject(
+                        string.IsNullOrWhiteSpace(commandData) ? "{}" : commandData,
+                        commandType,
+                        this.jsonSettings);
 
                     handler.Handle(command);
 
-                    EmptyResult result = new EmptyResult();//TODO - might need to change to ObjectResult of some type see comment in HttpContextExtsions
-                    
+                    var result = new ObjectResult(null);
+
                     await context.WriteResultAsync(result);
                 }
                 catch (Exception exception)
                 {
-                    var response = WebApiErrorResponseBuilder.CreateErrorResponseOrNull(exception, request);
+                    var response = WebApiErrorResponseBuilder.CreateErrorResponseOrNull(exception, context);
+
                     if (response != null)
                     {
                         await context.WriteResultAsync(response);
                     }
-
-                    throw;
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
             else
+            {
                 await context.WriteResultAsync(new NotFoundObjectResult(commandName));
-
+            }
         }
 
         private void ApplyHeaders(HttpRequest request)
@@ -80,9 +94,7 @@
         private static string GetCommandName(HttpRequest request)
         {
             Uri requestUri = new Uri(request.GetEncodedUrl());
-            string segment = requestUri.Segments.LastOrDefault();
-
-            return segment;
+            return requestUri.Segments.LastOrDefault();
         }
     }
 }

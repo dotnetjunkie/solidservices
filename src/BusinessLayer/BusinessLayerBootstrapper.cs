@@ -25,16 +25,17 @@
                 throw new ArgumentNullException(nameof(container));
             }
 
-            container.RegisterSingleton<IValidator>(new DataAnnotationsValidator(container));
-            
+            container.RegisterSingleton<IValidator>(new DataAnnotationsValidator());
+
             container.Register(typeof(ICommandHandler<>), businessLayerAssemblies);
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(AuthorizationCommandHandlerDecorator<>));
 
             container.Register(typeof(IQueryHandler<,>), businessLayerAssemblies);
+            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(ValidationQueryHandlerDecorator<,>));
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(AuthorizationQueryHandlerDecorator<,>));
         }
-        
+
         public static IEnumerable<Type> GetCommandTypes() =>
             from assembly in contractAssemblies
             from type in assembly.GetExportedTypes()
