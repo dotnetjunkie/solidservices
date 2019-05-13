@@ -36,9 +36,10 @@ namespace WebCoreService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // We need to—at least—call AddMvcCore, because it registers 11 implementations of the
+            // We need to—at least—call AddMvcCore(), because it registers 11 implementations of the
             // IActionResultExecutor<TResult> interface. Those are required by the HttpContextExtensions
-            // method.
+            // method. Ideally, the use of MVC should not be required at all, which can considerably lower
+            // the deployment footprint, but we're not there yet. Feedback is welcome.
             services
                 .AddMvcCore()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
