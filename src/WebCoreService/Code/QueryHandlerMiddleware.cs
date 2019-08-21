@@ -82,7 +82,12 @@
             }
             else
             {
-                await context.WriteResultAsync(new NotFoundObjectResult(queryName));
+                var response = new ObjectResult(queryName)
+                {
+                    StatusCode = StatusCodes.Status404NotFound
+                };
+
+                await context.WriteResultAsync(response);
             }
         }
 
