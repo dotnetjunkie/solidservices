@@ -32,10 +32,10 @@
 
             return
                 from number in Enumerable.Range(1, 100000)
-                select new OrderInfo 
-                { 
-                    Id = Guid.NewGuid(), 
-                    TotalAmount = random.Next(100, 1000), 
+                select new OrderInfo
+                {
+                    Id = Guid.NewGuid(),
+                    TotalAmount = random.Next(100, 1000),
                     CreationDate = DateTime.Today.AddDays(-number)
                 };
         }
