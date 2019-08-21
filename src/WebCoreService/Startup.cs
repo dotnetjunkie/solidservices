@@ -42,6 +42,7 @@ namespace WebCoreService
             // the deployment footprint, but we're not there yet. Feedback is welcome.
             services
                 .AddMvcCore()
+                .AddJsonFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSimpleInjector(this.container, options =>
