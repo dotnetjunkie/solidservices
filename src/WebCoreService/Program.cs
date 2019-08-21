@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace WebCoreService
 {
-    public class Program
+    // See the Startup class for two examples of query urls.
+    public static class Program
     {
         public static void Main(string[] args)
         {

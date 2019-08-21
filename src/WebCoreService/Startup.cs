@@ -12,6 +12,9 @@ namespace WebCoreService
     using Newtonsoft.Json.Serialization;
     using SimpleInjector;
 
+    // NOTE: Here are two example urls for queries:
+    // * /api/queries/GetUnshippedOrdersForCurrentCustomer?Paging.PageIndex=3&Paging.PageSize=10
+    // * /api/queries/GetOrderById?OrderId=97fc6660-283d-44b6-b170-7db0c2e2afae
     public class Startup
     {
         private readonly Container container = new Container();
