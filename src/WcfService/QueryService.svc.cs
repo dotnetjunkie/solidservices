@@ -21,7 +21,7 @@
         {
             Type queryType = query.GetType();
 
-            dynamic queryHandler = Bootstrapper.GetQueryHandler(query.GetType());
+            dynamic queryHandler = Bootstrapper.Instance.GetQueryHandler(queryType);
 
             try
             {

@@ -19,7 +19,7 @@
         {
             try
             {
-                dynamic commandHandler = Bootstrapper.GetCommandHandler(command.GetType());
+                dynamic commandHandler = Bootstrapper.Instance.GetCommandHandler(command.GetType());
 
                 commandHandler.Handle(command);
             }

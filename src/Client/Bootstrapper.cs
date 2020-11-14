@@ -3,34 +3,24 @@
     using Client.Code;
     using Client.Controllers;
     using Client.CrossCuttingConcerns;
-    using Contract;
-    using SimpleInjector;
+    using Contract.Commands.Orders;
 
     public static class Bootstrapper
     {
-        private static Container container;
+        public static QueryExampleController GetQueryExampleController() =>
+            new QueryExampleController(
+                queryProcessor: new DynamicQueryProcessor());
 
-        public static void Bootstrap()
-        {
-            container = new Container();
+        public static CommandExampleController GetCommandExampleController() =>
+            new CommandExampleController(
+                createOrderhandler: GetHandler<CreateOrderCommand>(),
+                shipOrderhandler: GetHandler<ShipOrderCommand>());
 
-            container.RegisterInstance<IQueryProcessor>(new DynamicQueryProcessor(container));
+        private static ICommandHandler<T> GetHandler<T>() =>
+            Decorate(new WcfServiceCommandHandlerProxy<T>());
 
-            container.Register(typeof(ICommandHandler<>), typeof(WcfServiceCommandHandlerProxy<>));
-            container.Register(typeof(IQueryHandler<,>), typeof(WcfServiceQueryHandlerProxy<,>));
-
-            container.RegisterDecorator(typeof(ICommandHandler<>),
-                typeof(FromWcfFaultTranslatorCommandHandlerDecorator<>));
-
-            container.Register<CommandExampleController>();
-            container.Register<QueryExampleController>();
-
-            container.Verify();
-        }
-
-        public static TService GetInstance<TService>() where TService : class
-        {
-            return container.GetInstance<TService>();
-        }
+        private static ICommandHandler<T> Decorate<T>(ICommandHandler<T> handler) =>
+            new FromWcfFaultTranslatorCommandHandlerDecorator<T>(
+                handler);
     }
 }

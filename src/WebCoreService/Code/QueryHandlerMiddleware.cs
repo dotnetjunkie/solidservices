@@ -15,20 +15,20 @@
     public sealed class QueryHandlerMiddleware : IMiddleware
     {
         private static readonly Dictionary<string, QueryInfo> QueryTypes;
-        private readonly Func<Type, object> handlerFactory;
+        private readonly Func<QueryInfo, object> handlerFactory;
         private readonly JsonSerializerSettings jsonSettings;
 
         static QueryHandlerMiddleware()
         {
-            QueryTypes = Bootstrapper.GetKnownQueryTypes().ToDictionary(
+            QueryTypes = Bootstrapper.GetQueryTypes().ToDictionary(
                 info => info.QueryType.Name.Replace("Query", string.Empty),
                 info => info,
                 StringComparer.OrdinalIgnoreCase);
         }
 
-        public QueryHandlerMiddleware(Container container, JsonSerializerSettings jsonSettings)
+        public QueryHandlerMiddleware(Func<QueryInfo, object> handlerFactory, JsonSerializerSettings jsonSettings)
         {
-            this.handlerFactory = container.GetInstance;
+            this.handlerFactory = handlerFactory;
             this.jsonSettings = jsonSettings;
         }
 
@@ -52,7 +52,7 @@
 
                 this.ApplyHeaders(request);
 
-                dynamic handler = this.handlerFactory.Invoke(handlerType);
+                dynamic handler = this.handlerFactory.Invoke(info);
 
                 try
                 {

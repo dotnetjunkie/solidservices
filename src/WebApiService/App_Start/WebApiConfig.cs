@@ -8,12 +8,11 @@
     using BusinessLayer;
     using Code;
     using Newtonsoft.Json.Serialization;
-    using SimpleInjector;
     using SolidServices.Controllerless.WebApi.Description;
 
     public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration config, Container container)
+        public static void Register(HttpConfiguration config)
         {
             // Setting the same-origin policy to 'unrestricted'. Remove or change this line if you want to 
             // restrict web pages from making AJAX requests to other domains. For more information, see:
@@ -25,21 +24,25 @@
 #if DEBUG
             UseIndentJsonSerialization(config);
 #endif
-            MapRoutes(config, container);
+            MapRoutes(config);
 
             UseControllerlessApiDocumentation(config);
         }
 
-        private static void MapRoutes(HttpConfiguration config, Container container)
+        private static void MapRoutes(HttpConfiguration config)
         {
+            var bootstrapper = new Bootstrapper();
+
+            bootstrapper.Verify();
+
             config.Routes.MapHttpRoute(
                 name: "QueryApi",
                 routeTemplate: "api/queries/{query}",
                 defaults: new { },
                 constraints: new { },
                 handler: new QueryDelegatingHandler(
-                    handlerFactory: container.GetInstance,
-                    queryTypes: Bootstrapper.GetKnownQueryTypes()));
+                    handlerFactory: info => bootstrapper.GetQueryHandler(info.QueryType),
+                    queryTypes: Bootstrapper.GetQueryTypes()));
 
             config.Routes.MapHttpRoute(
                 name: "CommandApi",
@@ -47,8 +50,8 @@
                 defaults: new { },
                 constraints: new { },
                 handler: new CommandDelegatingHandler(
-                    handlerFactory: container.GetInstance,
-                    commandTypes: Bootstrapper.GetKnownCommandTypes()));
+                    handlerFactory: bootstrapper.GetCommandHandler,
+                    commandTypes: Bootstrapper.GetCommandTypes()));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -59,7 +62,7 @@
         private static void UseControllerlessApiDocumentation(HttpConfiguration config)
         {
             var queryApiExplorer = new ControllerlessApiExplorer(
-                messageTypes: Bootstrapper.GetKnownQueryTypes().Select(t => t.QueryType),
+                messageTypes: Bootstrapper.GetQueryTypes().Select(t => t.QueryType),
                 responseTypeSelector: type => new QueryInfo(type).ResultType)
             {
                 ControllerName = "queries",
@@ -69,7 +72,7 @@
             };
 
             var commandApiExplorer = new ControllerlessApiExplorer(
-                messageTypes: Bootstrapper.GetKnownCommandTypes(),
+                messageTypes: Bootstrapper.GetCommandTypes(),
                 responseTypeSelector: type => typeof(void))
             {
                 ControllerName = "commands",

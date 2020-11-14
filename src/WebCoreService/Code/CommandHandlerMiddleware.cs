@@ -9,7 +9,6 @@
     using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
-    using SimpleInjector;
 
     public sealed class CommandHandlerMiddleware : IMiddleware
     {
@@ -20,15 +19,15 @@
 
         static CommandHandlerMiddleware()
         {
-            CommandTypes = Bootstrapper.GetKnownCommandTypes().ToDictionary(
+            CommandTypes = Bootstrapper.GetCommandTypes().ToDictionary(
                 keySelector: type => type.Name.Replace("Command", string.Empty),
                 elementSelector: type => type,
                 comparer: StringComparer.OrdinalIgnoreCase);
         }
 
-        public CommandHandlerMiddleware(Container container, JsonSerializerSettings jsonSettings)
+        public CommandHandlerMiddleware(Func<Type, object> handlerFactory, JsonSerializerSettings jsonSettings)
         {
-            this.handlerFactory = container.GetInstance;
+            this.handlerFactory = handlerFactory;
             this.jsonSettings = jsonSettings;
         }
 
@@ -48,7 +47,7 @@
 
                 this.ApplyHeaders(request);
 
-                dynamic handler = this.handlerFactory.Invoke(handlerType);
+                dynamic handler = this.handlerFactory.Invoke(commandType);
 
                 try
                 {

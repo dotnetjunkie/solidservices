@@ -4,26 +4,21 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Reflection;
-    using System.Security.Principal;
     using System.Threading;
     using BusinessLayer;
-    using Contract;
-    using SimpleInjector;
     using WcfService.Code;
     using WcfService.CrossCuttingConcerns;
 
-    public static class Bootstrapper
+    public sealed class Bootstrapper : BusinessLayerBootstrapper
     {
-        private static Container container;
+        public static readonly Bootstrapper Instance = new Bootstrapper();
 
-        public static object GetCommandHandler(Type commandType) =>
-            container.GetInstance(typeof(ICommandHandler<>).MakeGenericType(commandType));
-
-        public static object GetQueryHandler(Type queryType) =>
-            container.GetInstance(CreateQueryHandlerType(queryType));
-
-        public static IEnumerable<Type> GetCommandTypes() => BusinessLayerBootstrapper.GetCommandTypes();
+        public Bootstrapper() : base(
+            // WCF-specific Singletons
+            logger: new DebugLogger(),
+            principal: Thread.CurrentPrincipal)
+        {
+        }
 
         public static IEnumerable<Type> GetQueryAndResultTypes()
         {
@@ -32,35 +27,14 @@
             return queryTypes.Concat(resultTypes);
         }
 
-        public static void Bootstrap()
-        {
-            container = new Container();
-
-            BusinessLayerBootstrapper.Bootstrap(container);
-
-            container.RegisterDecorator(typeof(ICommandHandler<>),
-                typeof(ToWcfFaultTranslatorCommandHandlerDecorator<>));
-
-            container.RegisterWcfServices(Assembly.GetExecutingAssembly());
-
-            RegisterWcfSpecificDependencies();
-
-            container.Verify();
-        }
+        protected override ICommandHandler<TCommand> Decorate<TCommand>(
+            DbContext context, ICommandHandler<TCommand> handler) =>
+            new ToWcfFaultTranslatorCommandHandlerDecorator<TCommand>(
+                decoratee: base.Decorate(context, handler));
 
         public static void Log(Exception ex)
         {
             Debug.WriteLine(ex.ToString());
         }
-
-        private static void RegisterWcfSpecificDependencies()
-        {
-            container.RegisterInstance<ILogger>(new DebugLogger());
-
-            container.Register<IPrincipal>(() => Thread.CurrentPrincipal);
-        }
-
-        private static Type CreateQueryHandlerType(Type queryType) =>
-            typeof(IQueryHandler<,>).MakeGenericType(queryType, new QueryInfo(queryType).ResultType);
     }
 }

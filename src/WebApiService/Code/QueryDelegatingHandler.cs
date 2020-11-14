@@ -16,10 +16,10 @@ namespace WebApiService.Code
 
     public sealed class QueryDelegatingHandler : DelegatingHandler
     {
-        private readonly Func<Type, object> handlerFactory;
+        private readonly Func<QueryInfo, object> handlerFactory;
         private readonly Dictionary<string, QueryInfo> queryTypes;
 
-        public QueryDelegatingHandler(Func<Type, object> handlerFactory, IEnumerable<QueryInfo> queryTypes)
+        public QueryDelegatingHandler(Func<QueryInfo, object> handlerFactory, IEnumerable<QueryInfo> queryTypes)
         {
             this.handlerFactory = handlerFactory;
             this.queryTypes = queryTypes.ToDictionary(
@@ -53,7 +53,7 @@ namespace WebApiService.Code
 
             this.ApplyHeaders(request);
 
-            dynamic handler = this.handlerFactory.Invoke(handlerType);
+            dynamic handler = this.handlerFactory.Invoke(info);
 
             try
             {

@@ -52,7 +52,7 @@
 
             this.ApplyHeaders(request);
 
-            dynamic handler = this.handlerFactory.Invoke(handlerType);
+            dynamic handler = this.handlerFactory.Invoke(commandType);
 
             try
             {

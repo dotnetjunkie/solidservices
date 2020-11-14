@@ -6,7 +6,7 @@
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            Bootstrapper.Bootstrap();
+            Bootstrapper.Instance.Verify();
         }
     }
 }
