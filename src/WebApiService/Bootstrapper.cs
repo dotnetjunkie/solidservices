@@ -27,8 +27,8 @@
 
             BusinessLayerBootstrapper.Bootstrap(container);
 
-            container.RegisterSingleton<IPrincipal>(new HttpContextPrincipal());
-            container.RegisterSingleton<ILogger>(new DebugLogger());
+            container.RegisterInstance<IPrincipal>(new HttpContextPrincipal());
+            container.RegisterInstance<ILogger>(new DebugLogger());
 
             return container;
         }

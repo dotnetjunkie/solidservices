@@ -1,6 +1,7 @@
 ﻿namespace Client
 {
     using Client.Code;
+    using Client.Controllers;
     using Client.CrossCuttingConcerns;
     using Contract;
     using SimpleInjector;
@@ -13,13 +14,16 @@
         {
             container = new Container();
 
-            container.RegisterSingleton<IQueryProcessor>(new DynamicQueryProcessor(container));
+            container.RegisterInstance<IQueryProcessor>(new DynamicQueryProcessor(container));
 
             container.Register(typeof(ICommandHandler<>), typeof(WcfServiceCommandHandlerProxy<>));
             container.Register(typeof(IQueryHandler<,>), typeof(WcfServiceQueryHandlerProxy<,>));
 
             container.RegisterDecorator(typeof(ICommandHandler<>),
                 typeof(FromWcfFaultTranslatorCommandHandlerDecorator<>));
+
+            container.Register<CommandExampleController>();
+            container.Register<QueryExampleController>();
 
             container.Verify();
         }

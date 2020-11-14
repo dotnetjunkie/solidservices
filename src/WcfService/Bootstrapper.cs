@@ -55,7 +55,7 @@
 
         private static void RegisterWcfSpecificDependencies()
         {
-            container.RegisterSingleton<ILogger>(new DebugLogger());
+            container.RegisterInstance<ILogger>(new DebugLogger());
 
             container.Register<IPrincipal>(() => Thread.CurrentPrincipal);
         }

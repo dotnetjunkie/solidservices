@@ -25,7 +25,7 @@
                 throw new ArgumentNullException(nameof(container));
             }
 
-            container.RegisterSingleton<IValidator>(new DataAnnotationsValidator());
+            container.RegisterInstance<IValidator>(new DataAnnotationsValidator());
 
             container.Register(typeof(ICommandHandler<>), businessLayerAssemblies);
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
