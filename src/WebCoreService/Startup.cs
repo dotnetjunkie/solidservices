@@ -5,16 +5,16 @@ namespace WebCoreService
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using SimpleInjector;
 
     // NOTE: Here are two example urls for queries:
-    // * /api/queries/GetUnshippedOrdersForCurrentCustomer?Paging.PageIndex=3&Paging.PageSize=10
-    // * /api/queries/GetOrderById?OrderId=97fc6660-283d-44b6-b170-7db0c2e2afae
+    // * http://localhost:49228/api/queries/GetUnshippedOrdersForCurrentCustomer?Paging.PageIndex=3&Paging.PageSize=10
+    // * http://localhost:49228/api/queries/GetOrderById?OrderId=97fc6660-283d-44b6-b170-7db0c2e2afae
     public class Startup
     {
         private readonly Container container = new Container();
@@ -45,8 +45,7 @@ namespace WebCoreService
             // the deployment footprint, but we're not there yet. Feedback is welcome.
             services
                 .AddMvcCore()
-                .AddJsonFormatters()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .AddNewtonsoftJson();
 
             services.AddSimpleInjector(this.container, options =>
             {
@@ -54,7 +53,7 @@ namespace WebCoreService
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSimpleInjector(this.container);
 
@@ -73,8 +72,6 @@ namespace WebCoreService
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseMvc();
         }
 
         private static void UseMiddleware(IApplicationBuilder app, IMiddleware middleware) =>

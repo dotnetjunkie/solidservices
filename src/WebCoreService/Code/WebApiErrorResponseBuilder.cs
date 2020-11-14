@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Data.Entity.Core;
     using System.Net;
     using System.Security;
     using Microsoft.AspNetCore.Http;
@@ -31,9 +30,9 @@
                     // Return when the supplied model (command or query) isn't valid.
                     return new BadRequestObjectResult(exception.ValidationResult) { ContentTypes = contentTypes };
 
-                case OptimisticConcurrencyException _:
-                    // Return when there was a concurrency conflict in updating the model.
-                    return new ConflictObjectResult(thrownException.Message) { ContentTypes = contentTypes };
+                // case OptimisticConcurrencyException _:
+                //     // Return when there was a concurrency conflict in updating the model.
+                //     return new ConflictObjectResult(thrownException.Message) { ContentTypes = contentTypes };
 
                 case SecurityException _:
                     // Return when the current user doesn't have the proper rights to execute the requested
