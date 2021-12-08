@@ -55,7 +55,7 @@ namespace WebCoreService
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSimpleInjector(this.container);
+            app.ApplicationServices.UseSimpleInjector(this.container);
 
             Bootstrapper.Bootstrap(this.container);
 

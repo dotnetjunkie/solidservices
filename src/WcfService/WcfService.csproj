@@ -63,7 +63,7 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="SimpleInjector, Version=5.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.5.1.0\lib\net461\SimpleInjector.dll</HintPath>
+      <HintPath>..\packages\SimpleInjector.5.3.2\lib\net461\SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="SimpleInjector.Integration.Wcf, Version=5.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleInjector.Integration.Wcf.5.0.0\lib\net45\SimpleInjector.Integration.Wcf.dll</HintPath>
