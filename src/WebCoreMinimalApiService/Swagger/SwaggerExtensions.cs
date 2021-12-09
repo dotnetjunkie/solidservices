@@ -7,7 +7,6 @@ namespace WebCoreMinimalApiService
     {
         public static void IncludeXmlDocumentationFromDirectory(this SwaggerGenOptions options, string appDataPath)
         {
-            // The XML comment files are copied using a post-build event (see project settings / Build Events).
             string[] xmlCommentsPaths = Directory.GetFiles(appDataPath, "*.xml");
 
             if (!xmlCommentsPaths.Any())
