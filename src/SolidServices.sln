@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{9F659AB9-6E1D-47EE-8DF8-EC7C593129D7}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,7 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiService", "WebApiService\WebApiService.csproj", "{B71A8419-1827-48A4-913E-467B52A7C2F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCoreService", "WebCoreService\WebCoreService.csproj", "{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCoreService", "WebCoreService\WebCoreService.csproj", "{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCoreMinimalApiService", "WebCoreMinimalApiService\WebCoreMinimalApiService.csproj", "{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,18 @@ Global
 		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|x86.ActiveCfg = Release|Any CPU
 		{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}.Release|x86.Build.0 = Release|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Debug|x86.Build.0 = Debug|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Release|x86.ActiveCfg = Release|Any CPU
+		{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
