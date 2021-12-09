@@ -11,18 +11,13 @@ var services = builder.Services;
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Version = "v1",
-        Title = "SOLID Services API",
-    });
-    var appDataPath = AppDomain.CurrentDomain.BaseDirectory;
+    options.SwaggerDoc("v1", new OpenApiInfo { Version = "v1", Title = "SOLID Services API" });
 
     // The XML comment files are copied using a post-build event (see project settings / Build Events).
-    options.IncludeXmlDocumentationFromDirectory(appDataPath);
+    options.IncludeXmlDocumentationFromDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
     // Optional but useful: this includes the summaries of the command and query types in the operations.
-    options.IncludeMessageSummariesFromXmlDocs(appDataPath);
+    options.IncludeMessageSummariesFromXmlDocs(AppDomain.CurrentDomain.BaseDirectory);
 });
 
 var container = new Container();
