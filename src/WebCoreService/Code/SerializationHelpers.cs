@@ -6,6 +6,8 @@
 
     public static class SerializationHelpers
     {
+        // NOTE: arrays and dictionary formats are not supported. e.g. this won't work:
+        // ?values[0]=a&values[1]=b&x[A]=1&x[B]=5
         public static string ConvertQueryStringToJson(string query)
         {
             var collection = HttpUtility.ParseQueryString(query);
