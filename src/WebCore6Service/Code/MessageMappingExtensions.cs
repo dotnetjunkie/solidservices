@@ -2,7 +2,7 @@
 using SimpleInjector;
 using System.Reflection;
 
-namespace WebCoreMinimalApiService;
+namespace WebCoreService;
 
 public static class MessageMappingExtensions
 {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security;
 
-namespace WebCoreMinimalApiService;
+namespace WebCoreService;
 
 public static class WebApiErrorResponseBuilder
 {
@@ -32,9 +32,10 @@ public static class WebApiErrorResponseBuilder
                 // could be thrown for other reasons (such as program errors) in which case this branch should
                 // of course not execute.
                 return Results.NotFound(thrownException.Message);
-        }
 
-        // If the thrown exception can't be handled: return null.
-        return null;
+            default:
+                // If the thrown exception can't be handled: return null.
+                return null;
+        }
     }
 }

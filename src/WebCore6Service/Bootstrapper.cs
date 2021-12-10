@@ -1,11 +1,9 @@
-﻿namespace WebCoreMinimalApiService;
-
-using BusinessLayer;
+﻿using BusinessLayer;
 using SimpleInjector;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Principal;
+
+namespace WebCoreService;
 
 public static class Bootstrapper
 {
@@ -18,7 +16,7 @@ public static class Bootstrapper
         BusinessLayerBootstrapper.Bootstrap(container);
 
         container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
-        container.RegisterInstance<ILogger>(new DebugLogger());
+        container.RegisterInstance<BusinessLayer.ILogger>(new DebugLogger());
 
         return container;
     }
@@ -37,7 +35,7 @@ public static class Bootstrapper
         private IPrincipal Principal => this.httpContextAccessor.HttpContext?.User!;
     }
 
-    private sealed class DebugLogger : ILogger
+    private sealed class DebugLogger : BusinessLayer.ILogger
     {
         public void Log(string message)
         {

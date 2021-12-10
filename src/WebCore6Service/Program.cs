@@ -1,6 +1,6 @@
 using Microsoft.OpenApi.Models;
 using SimpleInjector;
-using WebCoreMinimalApiService;
+using WebCoreService;
 
 var builder = WebApplication.CreateBuilder(args);
 

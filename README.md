@@ -15,6 +15,6 @@ For more background about the used design, please read the following articles:
 This project contains the following Web Service projects that all expose the same set of commands and queries:
 
 * [WCF](https://github.com/dotnetjunkie/solidservices/tree/master/src/WcfService)
-* [ASP.NET 4.8 Web API](https://github.com/dotnetjunkie/solidservices/tree/master/src/WebApiService) (includes a Swagger API)
-* [ASP.NET Core 3 Web API](https://github.com/dotnetjunkie/solidservices/tree/master/src/WebCoreService)
-* [ASP.NET Core 6 Minimal API](https://github.com/dotnetjunkie/solidservices/tree/master/src/WebCoreMinimalApiService) (includes a Swagger API)
+* [ASP.NET 'Classic' 4.8 Web API](https://github.com/dotnetjunkie/solidservices/tree/master/src/WebApiService) (includes a Swagger API)
+* [ASP.NET Core 3.1 Web API](https://github.com/dotnetjunkie/solidservices/tree/master/src/WebCore3Service)
+* [ASP.NET Core 6 Web API](https://github.com/dotnetjunkie/solidservices/tree/master/src/WebCore6Service) (includes a Swagger API)

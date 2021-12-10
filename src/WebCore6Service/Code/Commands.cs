@@ -1,7 +1,7 @@
 ﻿using BusinessLayer;
 using SimpleInjector;
 
-namespace WebCoreMinimalApiService;
+namespace WebCoreService;
 
 // This class is named "Commands" to allow Swagger to group command handler routes.
 public sealed record Commands(Container Container)

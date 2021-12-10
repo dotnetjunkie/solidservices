@@ -21,9 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiService", "WebApiService\WebApiService.csproj", "{B71A8419-1827-48A4-913E-467B52A7C2F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCoreService", "WebCoreService\WebCoreService.csproj", "{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCore3Service", "WebCore3Service\WebCore3Service.csproj", "{BB7A06CC-A96E-4B96-B8B6-2E96F3F20783}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCoreMinimalApiService", "WebCoreMinimalApiService\WebCoreMinimalApiService.csproj", "{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCore6Service", "WebCore6Service\WebCore6Service.csproj", "{1941CDB2-31FD-4DEC-B0A6-D3FA78431CC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
