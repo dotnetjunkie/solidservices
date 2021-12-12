@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿namespace WebCoreService;
+
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Security;
-
-namespace WebCoreService;
 
 public static class WebApiErrorResponseBuilder
 {

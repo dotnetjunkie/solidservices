@@ -12,7 +12,8 @@
     {
         public static IEnumerable<Type> GetKnownCommandTypes() => BusinessLayerBootstrapper.GetCommandTypes();
 
-        public static IEnumerable<QueryInfo> GetKnownQueryTypes() => BusinessLayerBootstrapper.GetQueryTypes();
+        public static IEnumerable<(Type QueryType, Type ResultType)> GetKnownQueryTypes() =>
+            BusinessLayerBootstrapper.GetQueryTypes();
 
         public static Container Bootstrap(Container container)
         {

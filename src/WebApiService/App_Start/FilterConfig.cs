@@ -1,6 +1,5 @@
 ﻿namespace WebApiService
 {
-    using System.Web;
     using System.Web.Mvc;
 
     public class FilterConfig

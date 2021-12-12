@@ -1,7 +1,7 @@
-﻿using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
+﻿namespace WebCoreService;
 
-namespace WebCoreService;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 public static class SwaggerExtensions
 {

@@ -1,6 +1,4 @@
-﻿using System.Web.Http;
-
-namespace WebApiService.Code
+﻿namespace WebApiService.Code
 {
     using System;
     using System.Collections.Generic;
@@ -10,16 +8,17 @@ namespace WebApiService.Code
     using System.Net.Http.Formatting;
     using System.Threading;
     using System.Threading.Tasks;
-    using BusinessLayer;
+    using System.Web.Http;
     using Contract;
     using Newtonsoft.Json;
 
     public sealed class QueryDelegatingHandler : DelegatingHandler
     {
         private readonly Func<Type, object> handlerFactory;
-        private readonly Dictionary<string, QueryInfo> queryTypes;
+        private readonly Dictionary<string, (Type QueryType, Type ResultType)> queryTypes;
 
-        public QueryDelegatingHandler(Func<Type, object> handlerFactory, IEnumerable<QueryInfo> queryTypes)
+        public QueryDelegatingHandler(
+            Func<Type, object> handlerFactory, IEnumerable<(Type QueryType, Type ResultType)> queryTypes)
         {
             this.handlerFactory = handlerFactory;
             this.queryTypes = queryTypes.ToDictionary(
@@ -44,9 +43,9 @@ namespace WebApiService.Code
                 ? SerializationHelpers.ConvertQueryStringToJson(request.RequestUri.Query)
                 : await request.Content.ReadAsStringAsync();
 
-            QueryInfo info = this.queryTypes[queryName];
+            var (queryType, resultType) = this.queryTypes[queryName];
 
-            Type handlerType = typeof(IQueryHandler<,>).MakeGenericType(info.QueryType, info.ResultType);
+            Type handlerType = typeof(IQueryHandler<,>).MakeGenericType(queryType, resultType);
 
             // GetDependencyScope() calls IDependencyResolver.BeginScope internally.
             request.GetDependencyScope();
@@ -57,11 +56,11 @@ namespace WebApiService.Code
 
             try
             {
-                dynamic query = DeserializeQuery(request, queryData, info.QueryType);
+                dynamic query = DeserializeQuery(request, queryData, queryType);
 
                 object result = handler.Handle(query);
 
-                return CreateResponse(result, info.ResultType, HttpStatusCode.OK, request);
+                return CreateResponse(result, resultType, HttpStatusCode.OK, request);
             }
             catch (Exception ex)
             {

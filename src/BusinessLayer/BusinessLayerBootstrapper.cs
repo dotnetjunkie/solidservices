@@ -1,13 +1,12 @@
 ﻿namespace BusinessLayer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Reflection;
     using BusinessLayer.CrossCuttingConcerns;
     using Contract;
     using SimpleInjector;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     // This class allows registering all types that are defined in the business layer, and are shared across
     // all applications that use this layer (WCF and Web API). For simplicity, this class is placed inside
@@ -15,8 +14,8 @@
     // concern, create a specific BusinessLayer.Bootstrap project with this class.
     public static class BusinessLayerBootstrapper
     {
-        private static Assembly[] contractAssemblies = new[] { typeof(IQuery<>).Assembly };
-        private static Assembly[] businessLayerAssemblies = new[] { Assembly.GetExecutingAssembly() };
+        private static readonly Assembly[] ContractAssemblies = new[] { typeof(IQuery<>).Assembly };
+        private static readonly Assembly[] BusinessLayerAssemblies = new[] { Assembly.GetExecutingAssembly() };
 
         public static void Bootstrap(Container container)
         {
@@ -27,41 +26,33 @@
 
             container.RegisterInstance<IValidator>(new DataAnnotationsValidator());
 
-            container.Register(typeof(ICommandHandler<>), businessLayerAssemblies);
+            container.Register(typeof(ICommandHandler<>), BusinessLayerAssemblies);
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(AuthorizationCommandHandlerDecorator<>));
 
-            container.Register(typeof(IQueryHandler<,>), businessLayerAssemblies);
+            container.Register(typeof(IQueryHandler<,>), BusinessLayerAssemblies);
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(ValidationQueryHandlerDecorator<,>));
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(AuthorizationQueryHandlerDecorator<,>));
         }
 
         public static IEnumerable<Type> GetCommandTypes() =>
-            from assembly in contractAssemblies
+            from assembly in ContractAssemblies
             from type in assembly.GetExportedTypes()
             where type.Name.EndsWith("Command")
             select type;
 
-        public static IEnumerable<QueryInfo> GetQueryTypes() =>
-            from assembly in contractAssemblies
+        public static Type CreateQueryHandlerType(Type queryType) =>
+            typeof(IQueryHandler<,>).MakeGenericType(queryType, DetermineResultTypes(queryType).Single());
+
+        public static IEnumerable<(Type QueryType, Type ResultType)> GetQueryTypes() =>
+            from assembly in ContractAssemblies
             from type in assembly.GetExportedTypes()
-            where QueryInfo.IsQuery(type)
-            select new QueryInfo(type);
-    }
+            where IsQuery(type)
+            select (type, DetermineResultTypes(type).Single());
 
-    [DebuggerDisplay("{QueryType.Name,nq}")]
-    public sealed class QueryInfo
-    {
-        public readonly Type QueryType;
-        public readonly Type ResultType;
+        public static Type GetQueryResultType(Type queryType) => DetermineResultTypes(queryType).Single();
 
-        public QueryInfo(Type queryType)
-        {
-            this.QueryType = queryType;
-            this.ResultType = DetermineResultTypes(queryType).Single();
-        }
-
-        public static bool IsQuery(Type type) => DetermineResultTypes(type).Any();
+        private static bool IsQuery(Type type) => DetermineResultTypes(type).Any();
 
         private static IEnumerable<Type> DetermineResultTypes(Type type) =>
             from interfaceType in type.GetInterfaces()

@@ -60,7 +60,7 @@
         {
             var queryApiExplorer = new ControllerlessApiExplorer(
                 messageTypes: Bootstrapper.GetKnownQueryTypes().Select(t => t.QueryType),
-                responseTypeSelector: type => new QueryInfo(type).ResultType)
+                responseTypeSelector: type => BusinessLayerBootstrapper.GetQueryResultType(type))
             {
                 ControllerName = "queries",
                 ParameterSourceSelector = type => ApiParameterSource.FromUri,

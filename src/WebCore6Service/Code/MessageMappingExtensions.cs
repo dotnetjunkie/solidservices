@@ -1,8 +1,7 @@
-﻿using BusinessLayer;
-using SimpleInjector;
-using System.Reflection;
+﻿namespace WebCoreService;
 
-namespace WebCoreService;
+using System.Reflection;
+using SimpleInjector;
 
 public static class MessageMappingExtensions
 {
@@ -25,18 +24,21 @@ public static class MessageMappingExtensions
     }
 
     public static void MapQueries(
-        this IEndpointRouteBuilder app, string patternFormat, Container container, IEnumerable<QueryInfo> queryTypes)
+        this IEndpointRouteBuilder app,
+        string patternFormat,
+        Container container,
+        IEnumerable<(Type QueryType, Type ResultType)> queryTypes)
     {
         var dispatcher = new Queries(container);
         MethodInfo genericMethod = typeof(Queries).GetMethod(nameof(Queries.InvokeAsync))!;
 
-        foreach (QueryInfo info in queryTypes)
+        foreach (var (queryType, resultType) in queryTypes)
         {
-            MethodInfo method = genericMethod.MakeGenericMethod(info.QueryType, info.ResultType);
+            MethodInfo method = genericMethod.MakeGenericMethod(queryType, resultType);
             Type funcType = typeof(Func<,,>).MakeGenericType(
                 method.GetParameters().Append(method.ReturnParameter).Select(p => p.ParameterType).ToArray());
             Delegate handler = Delegate.CreateDelegate(funcType, dispatcher, method);
-            var queryName = info.QueryType.Name.Replace("Query", string.Empty);
+            var queryName = queryType.Name.Replace("Query", string.Empty);
             var pattern = string.Format(patternFormat, queryName);
 
             // Hi, dear reader. I need your help. This method registers a query call as a HTTP POST action.  

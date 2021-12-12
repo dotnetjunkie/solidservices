@@ -1,7 +1,7 @@
-﻿using Contract;
-using SimpleInjector;
+﻿namespace WebCoreService;
 
-namespace WebCoreService;
+using Contract;
+using SimpleInjector;
 
 // This class is named "Commands" to allow Swagger to group query handler routes.
 public sealed record Queries(Container Container)

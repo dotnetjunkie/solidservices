@@ -8,7 +8,6 @@
     using System.Security.Principal;
     using System.Threading;
     using BusinessLayer;
-    using Contract;
     using SimpleInjector;
     using WcfService.Code;
     using WcfService.CrossCuttingConcerns;
@@ -21,7 +20,7 @@
             container.GetInstance(typeof(ICommandHandler<>).MakeGenericType(commandType));
 
         public static object GetQueryHandler(Type queryType) =>
-            container.GetInstance(CreateQueryHandlerType(queryType));
+            container.GetInstance(BusinessLayerBootstrapper.CreateQueryHandlerType(queryType));
 
         public static IEnumerable<Type> GetCommandTypes() => BusinessLayerBootstrapper.GetCommandTypes();
 
@@ -59,8 +58,5 @@
 
             container.Register<IPrincipal>(() => Thread.CurrentPrincipal);
         }
-
-        private static Type CreateQueryHandlerType(Type queryType) =>
-            typeof(IQueryHandler<,>).MakeGenericType(queryType, new QueryInfo(queryType).ResultType);
     }
 }

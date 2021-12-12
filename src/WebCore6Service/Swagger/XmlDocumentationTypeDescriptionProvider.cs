@@ -1,7 +1,7 @@
-﻿using System.Globalization;
-using System.Xml.XPath;
+﻿namespace WebCoreService;
 
-namespace WebCoreService;
+using System.Globalization;
+using System.Xml.XPath;
 
 // NOTE: The code in this file is copy-pasted from the default Web API Visual Studio 2013 template.
 /// <summary>

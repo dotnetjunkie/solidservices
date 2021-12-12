@@ -1,22 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Contract.Commands.Orders;
-using SolidServices.Controllerless.WebApi.Description;
-using Swashbuckle.Application;
-using Swashbuckle.Swagger;
-using WebApiService;
-
-[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
-
+[assembly: System.Web.PreApplicationStartMethod(typeof(WebApiService.SwaggerConfig), "Register")]
 namespace WebApiService
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+    using System.Linq;
+    using System.Web.Hosting;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+    using Contract.Commands.Orders;
+    using SolidServices.Controllerless.WebApi.Description;
+    using Swashbuckle.Application;
+    using Swashbuckle.Swagger;
+
     // NOTE: To see Swagger in action, view this Web API in your browser: http://localhost:2591/swagger/
     public static class SwaggerConfig
     {

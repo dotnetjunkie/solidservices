@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BusinessLayer;
     using Contract;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Http.Extensions;
@@ -14,7 +13,7 @@
 
     public sealed class QueryHandlerMiddleware : IMiddleware
     {
-        private static readonly Dictionary<string, QueryInfo> QueryTypes;
+        private static readonly Dictionary<string, (Type QueryType, Type ResultType)> QueryTypes;
         private readonly Func<Type, object> handlerFactory;
         private readonly JsonSerializerSettings jsonSettings;
 
@@ -46,9 +45,9 @@
                     ? SerializationHelpers.ConvertQueryStringToJson(request.QueryString.Value)
                     : request.Body.ReadToEnd();
 
-                QueryInfo info = QueryTypes[queryName];
+                var (queryType, resultType) = QueryTypes[queryName];
 
-                Type handlerType = typeof(IQueryHandler<,>).MakeGenericType(info.QueryType, info.ResultType);
+                Type handlerType = typeof(IQueryHandler<,>).MakeGenericType(queryType, resultType);
 
                 this.ApplyHeaders(request);
 
@@ -58,7 +57,7 @@
                 {
                     dynamic query = JsonConvert.DeserializeObject(
                         string.IsNullOrWhiteSpace(queryData) ? "{}" : queryData,
-                        info.QueryType,
+                        queryType,
                         this.jsonSettings);
 
                     object result = handler.Handle(query);

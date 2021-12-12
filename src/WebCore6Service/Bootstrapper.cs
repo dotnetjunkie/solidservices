@@ -1,15 +1,16 @@
-﻿using BusinessLayer;
+﻿namespace WebCoreService;
+
+using BusinessLayer;
 using SimpleInjector;
 using System.Diagnostics;
 using System.Security.Principal;
-
-namespace WebCoreService;
 
 public static class Bootstrapper
 {
     public static IEnumerable<Type> GetKnownCommandTypes() => BusinessLayerBootstrapper.GetCommandTypes();
 
-    public static IEnumerable<QueryInfo> GetKnownQueryTypes() => BusinessLayerBootstrapper.GetQueryTypes();
+    public static IEnumerable<(Type QueryType, Type ResultType)> GetKnownQueryTypes() =>
+        BusinessLayerBootstrapper.GetQueryTypes();
 
     public static Container Bootstrap(Container container)
     {
