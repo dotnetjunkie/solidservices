@@ -3,7 +3,7 @@
 using Contract;
 using SimpleInjector;
 
-// This class is named "Commands" to allow Swagger to group query handler routes.
+// This class is named "Queries" to allow Swagger to group query handler routes.
 public sealed record Queries(Container Container)
 {
     public async Task<TResult> InvokeAsync<TQuery, TResult>(HttpContext context, TQuery query)

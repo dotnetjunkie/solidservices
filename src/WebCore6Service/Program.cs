@@ -38,7 +38,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapCommands("/api/commands/{0}", container, Bootstrapper.GetKnownCommandTypes());
-app.MapQueries("/api/queries/{0}", container, Bootstrapper.GetKnownQueryTypes());
+app.MapCommands(
+    pattern: MessageMapping.FlatApi(new Commands(container), "/api/commands/{0}"),
+    commandTypes: Bootstrapper.GetKnownCommandTypes());
+app.MapQueries(
+    pattern: MessageMapping.FlatApi(new Queries(container), "/api/queries/{0}"),
+    queryTypes: Bootstrapper.GetKnownQueryTypes());
 
 app.Run();
