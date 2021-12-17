@@ -10,6 +10,7 @@
     using System.Threading.Tasks;
     using BusinessLayer;
     using Newtonsoft.Json;
+    using SimpleInjector;
 
     public sealed class CommandDelegatingHandler : DelegatingHandler
     {
@@ -20,7 +21,7 @@
         {
             this.handlerFactory = handlerFactory;
             this.commandTypes = commandTypes.ToDictionary(
-                keySelector: type => type.Name.Replace("Command", string.Empty),
+                keySelector: type => type.ToFriendlyName(),
                 elementSelector: type => type,
                 comparer: StringComparer.OrdinalIgnoreCase);
         }
@@ -33,7 +34,7 @@
             if (request.Method != HttpMethod.Post)
             {
                 return request.CreateErrorResponse(HttpStatusCode.MethodNotAllowed,
-                    "The requested resource does not support http method '" + request.Method + "'.");
+                    "The requested resource does not support HTTP method '" + request.Method + "'.");
             }
 
             if (!this.commandTypes.ContainsKey(commandName))

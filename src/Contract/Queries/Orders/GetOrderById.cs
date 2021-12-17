@@ -5,7 +5,7 @@
     using Validators;
 
     /// <summary>Gets order information of a single order by its id.</summary>
-    public class GetOrderByIdQuery : IQuery<OrderInfo>
+    public class GetOrderById : IQuery<OrderInfo>
     {
         /// <summary>The id of the order to get.</summary>
         [NonEmptyGuid]

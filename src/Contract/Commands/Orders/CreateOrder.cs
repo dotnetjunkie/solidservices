@@ -6,7 +6,7 @@
     using Contract.Validators;
 
     /// <summary>Creates a new order.</summary>
-    public class CreateOrderCommand
+    public class CreateOrder : ICommand
     {
         /// <summary>The order id of the new order.</summary>
         [NonEmptyGuid]

@@ -65,7 +65,7 @@
                 ControllerName = "queries",
                 ParameterSourceSelector = type => ApiParameterSource.FromUri,
                 HttpMethodSelector = type => HttpMethod.Get,
-                ActionNameSelector = type => type.Name.Replace("Query", string.Empty)
+                ActionNameSelector = type => type.ToFriendlyName()
             };
 
             var commandApiExplorer = new ControllerlessApiExplorer(
@@ -74,7 +74,7 @@
             {
                 ControllerName = "commands",
                 ParameterName = "command",
-                ActionNameSelector = type => type.Name.Replace("Command", string.Empty),
+                ActionNameSelector = type => type.ToFriendlyName(),
             };
 
             config.Services.Replace(typeof(IApiExplorer),

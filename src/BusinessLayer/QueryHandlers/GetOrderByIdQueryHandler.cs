@@ -6,9 +6,9 @@
     using Contract.DTOs;
     using Contract.Queries.Orders;
 
-    public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, OrderInfo>
+    public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderById, OrderInfo>
     {
-        public OrderInfo Handle(GetOrderByIdQuery query)
+        public OrderInfo Handle(GetOrderById query)
         {
             if (query.OrderId == Guid.Empty)
             {

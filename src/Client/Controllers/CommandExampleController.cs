@@ -6,12 +6,12 @@
 
     public class CommandExampleController
     {
-        private readonly ICommandHandler<CreateOrderCommand> createOrderhandler;
-        private readonly ICommandHandler<ShipOrderCommand> shipOrderhandler;
+        private readonly ICommandHandler<CreateOrder> createOrderhandler;
+        private readonly ICommandHandler<ShipOrder> shipOrderhandler;
 
         public CommandExampleController(
-            ICommandHandler<CreateOrderCommand> createOrderhandler,
-            ICommandHandler<ShipOrderCommand> shipOrderhandler)
+            ICommandHandler<CreateOrder> createOrderhandler,
+            ICommandHandler<ShipOrder> shipOrderhandler)
         {
             this.createOrderhandler = createOrderhandler;
             this.shipOrderhandler = shipOrderhandler;
@@ -19,7 +19,7 @@
 
         public Guid CreateOrder()
         {
-            var createOrderCommand = new CreateOrderCommand
+            var createOrderCommand = new CreateOrder
             {
                 NewOrderId = Guid.NewGuid(),
                 ShippingAddress = new Address
@@ -39,7 +39,7 @@
 
         public void ShipOrder(Guid orderId)
         {
-            this.shipOrderhandler.Handle(new ShipOrderCommand { OrderId = orderId });
+            this.shipOrderhandler.Handle(new ShipOrder { OrderId = orderId });
 
             Console.WriteLine("Order with ID {0} is shipped.", orderId);
         }

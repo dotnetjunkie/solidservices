@@ -20,7 +20,7 @@ namespace WebApiService
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
-            var contractAssembly = typeof(CreateOrderCommand).Assembly;
+            var contractAssembly = typeof(CreateOrder).Assembly;
 
             GlobalConfiguration.Configuration.EnableSwagger(c =>
             {

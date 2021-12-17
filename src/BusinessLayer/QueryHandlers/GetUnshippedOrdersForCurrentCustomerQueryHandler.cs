@@ -9,7 +9,7 @@
     using Contract.Queries.Orders;
 
     public class GetUnshippedOrdersForCurrentCustomerQueryHandler
-        : IQueryHandler<GetUnshippedOrdersForCurrentCustomerQuery, Paged<OrderInfo>>
+        : IQueryHandler<GetUnshippedOrdersForCurrentCustomer, Paged<OrderInfo>>
     {
         private readonly ILogger logger;
 
@@ -18,7 +18,7 @@
             this.logger = logger;
         }
 
-        public Paged<OrderInfo> Handle(GetUnshippedOrdersForCurrentCustomerQuery query)
+        public Paged<OrderInfo> Handle(GetUnshippedOrdersForCurrentCustomer query)
         {
             this.logger.Log(string.Format("{0} {{ Paging = {{ PageIndex = {1}, PageSize = {2} }} }}",
                 query.GetType().Name, query.Paging?.PageIndex, query.Paging?.PageSize));

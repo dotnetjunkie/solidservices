@@ -3,7 +3,7 @@
     using Contract;
     using Contract.Commands.Orders;
 
-    public class ShipOrderCommandHandler : ICommandHandler<ShipOrderCommand>
+    public class ShipOrderCommandHandler : ICommandHandler<ShipOrder>
     {
         private readonly ILogger logger;
 
@@ -12,7 +12,7 @@
             this.logger = logger;
         }
 
-        public void Handle(ShipOrderCommand command)
+        public void Handle(ShipOrder command)
         {
             this.logger.Log("Shipping order " + command.OrderId);
         }

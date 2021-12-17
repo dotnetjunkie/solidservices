@@ -21,7 +21,7 @@
         static CommandHandlerMiddleware()
         {
             CommandTypes = Bootstrapper.GetKnownCommandTypes().ToDictionary(
-                keySelector: type => type.Name.Replace("Command", string.Empty),
+                keySelector: type => type.ToFriendlyName(),
                 elementSelector: type => type,
                 comparer: StringComparer.OrdinalIgnoreCase);
         }

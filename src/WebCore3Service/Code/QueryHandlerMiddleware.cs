@@ -20,7 +20,7 @@
         static QueryHandlerMiddleware()
         {
             QueryTypes = Bootstrapper.GetKnownQueryTypes().ToDictionary(
-                info => info.QueryType.Name.Replace("Query", string.Empty),
+                info => info.QueryType.ToFriendlyName(),
                 info => info,
                 StringComparer.OrdinalIgnoreCase);
         }

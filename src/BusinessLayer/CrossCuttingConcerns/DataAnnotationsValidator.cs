@@ -1,6 +1,5 @@
 ﻿namespace BusinessLayer.CrossCuttingConcerns
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
 

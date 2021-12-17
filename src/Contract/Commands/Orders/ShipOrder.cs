@@ -1,11 +1,10 @@
 ﻿namespace Contract.Commands.Orders
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using Contract.Validators;
 
     /// <summary>Commands an order to be shipped.</summary>
-    public class ShipOrderCommand
+    public class ShipOrder : ICommand
     {
         /// <summary>The id of the order.</summary>
         [NonEmptyGuid]

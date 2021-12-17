@@ -38,7 +38,8 @@
         public static IEnumerable<Type> GetCommandTypes() =>
             from assembly in ContractAssemblies
             from type in assembly.GetExportedTypes()
-            where type.Name.EndsWith("Command")
+            where typeof(ICommand).IsAssignableFrom(type)
+            where !type.IsAbstract
             select type;
 
         public static Type CreateQueryHandlerType(Type queryType) =>

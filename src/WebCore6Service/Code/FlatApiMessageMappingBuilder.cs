@@ -65,11 +65,5 @@ public sealed class FlatApiMessageMappingBuilder : IMessageMappingBuilder
         SimpleInjector.TypesExtensions.ToFriendlyName(messageType)
 
         // Replace generic markers. Typically they are allowed as root, but that would be frowned upon.
-        .Replace("<", string.Empty).Replace(">", string.Empty)
-
-        // Change nested-type symbols
-        .Replace("+", "_").Replace(".", "_")
-
-        // Remove message type postfixes.
-        .Replace("Command", string.Empty).Replace("Query", string.Empty);
+        .Replace("<", string.Empty).Replace(">", string.Empty);
 }

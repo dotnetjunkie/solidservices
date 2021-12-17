@@ -50,15 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Orders\CreateOrderCommand.cs" />
-    <Compile Include="Commands\Orders\ShipOrderCommand.cs" />
+    <Compile Include="Commands\Orders\CreateOrder.cs" />
+    <Compile Include="Commands\Orders\ShipOrder.cs" />
     <Compile Include="DTOs\Address.cs" />
     <Compile Include="DTOs\OrderInfo.cs" />
+    <Compile Include="ICommand.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="IQueryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\Orders\GetOrderByIdQuery.cs" />
-    <Compile Include="Queries\Orders\GetUnshippedOrdersForCurrentCustomerQuery.cs" />
+    <Compile Include="Queries\Orders\GetOrderById.cs" />
+    <Compile Include="Queries\Orders\GetUnshippedOrdersForCurrentCustomer.cs" />
     <Compile Include="Queries\Paged.cs" />
     <Compile Include="Queries\PageInfo.cs" />
     <Compile Include="Validators\CompositeValidationResult.cs" />

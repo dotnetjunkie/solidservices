@@ -5,8 +5,9 @@
     /// <summary>
     /// Gets a paged list of all unshipped orders for the current logged in user.
     /// </summary>
-    public class GetUnshippedOrdersForCurrentCustomerQuery : IQuery<Paged<OrderInfo>>
+    public class GetUnshippedOrdersForCurrentCustomer : IQuery<Paged<OrderInfo>>
     {
+        /// <summary>The paging information.</summary>
         public PageInfo Paging { get; set; }
     }
 }

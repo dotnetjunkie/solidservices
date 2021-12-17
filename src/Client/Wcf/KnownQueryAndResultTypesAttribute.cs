@@ -15,7 +15,7 @@
         private static IEnumerable<Type> ResultTypes => QueryTypes.Select(GetResultType);
 
         private static IEnumerable<Type> QueryTypes =>
-            typeof(Contract.Queries.Orders.GetOrderByIdQuery).Assembly.GetExportedTypes().Where(IsQueryType);
+            typeof(Contract.Queries.Orders.GetOrderById).Assembly.GetExportedTypes().Where(IsQueryType);
 
         private static bool IsQueryType(Type type) => GetResultType(type) != null;
 
