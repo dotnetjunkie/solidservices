@@ -59,7 +59,7 @@
     <Compile Include="IQueryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Orders\GetOrderById.cs" />
-    <Compile Include="Queries\Orders\GetUnshippedOrdersForCurrentCustomer.cs" />
+    <Compile Include="Queries\Orders\GetUnshippedOrders.cs" />
     <Compile Include="Queries\Paged.cs" />
     <Compile Include="Queries\PageInfo.cs" />
     <Compile Include="Validators\CompositeValidationResult.cs" />

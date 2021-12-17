@@ -19,7 +19,7 @@
 
         public void ShowOrders(int pageIndex, int pageSize)
         {
-            var orders = this.queryProcessor.Execute(new GetUnshippedOrdersForCurrentCustomer
+            var orders = this.queryProcessor.Execute(new GetUnshippedOrders
             {
                 Paging = new PageInfo { PageIndex = pageIndex, PageSize = pageSize }
             });
