@@ -8,8 +8,8 @@ This project contains no documentation, just code. Please visit the following ar
 
 For more background about the used design, please read the following articles:
 
-* [Meanwhile… on the command side of my architecture](https://blogs.cuttingedge.it/steven/posts/2011/meanwhile-on-the-command-side-of-my-architecture/)
-* [Meanwhile… on the query side of my architecture](https://blogs.cuttingedge.it/steven/posts/2011/meanwhile-on-the-query-side-of-my-architecture/)
+* [Meanwhile… on the command side of my architecture](https://blogs.cuttingedge.it/steven/p/commands/)
+* [Meanwhile… on the query side of my architecture](https://blogs.cuttingedge.it/steven/p/queries/)
 
 
 This project contains the following Web Service projects that all expose the same set of commands and queries:
