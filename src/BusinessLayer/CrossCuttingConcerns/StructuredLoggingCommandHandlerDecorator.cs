@@ -1,8 +1,10 @@
 ﻿namespace BusinessLayer.CrossCuttingConcerns
 {
+    using Contract;
     using System.Diagnostics;
 
     public sealed class StructuredLoggingCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
+        where TCommand : ICommand
     {
         private readonly StructuredMessageLogger<TCommand> logger;
         private readonly ICommandHandler<TCommand> decoratee;

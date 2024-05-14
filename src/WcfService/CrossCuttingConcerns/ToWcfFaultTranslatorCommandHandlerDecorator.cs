@@ -3,8 +3,10 @@
     using System.ComponentModel.DataAnnotations;
     using System.ServiceModel;
     using BusinessLayer;
+    using Contract;
 
     public class ToWcfFaultTranslatorCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
+        where TCommand : ICommand
     {
         private readonly ICommandHandler<TCommand> decoratee;
 

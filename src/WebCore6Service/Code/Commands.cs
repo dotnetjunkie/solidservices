@@ -1,12 +1,13 @@
 ﻿namespace WebCoreService;
 
 using BusinessLayer;
+using Contract;
 using SimpleInjector;
 
 // This class is named "Commands" to allow Swagger to group command handler routes.
 public sealed record Commands(Container Container)
 {
-    public Task<IResult> InvokeAsync<TCommand>(TCommand command)
+    public Task<IResult> InvokeAsync<TCommand>(TCommand command) where TCommand : ICommand
     {
         var handler = Container.GetInstance<ICommandHandler<TCommand>>();
 

@@ -5,7 +5,7 @@
 
     using Contract;
 
-    public class AuthorizationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
+    public class AuthorizationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand> where TCommand : ICommand
     {
         private readonly ICommandHandler<TCommand> decoratedHandler;
         private readonly IPrincipal currentUser;

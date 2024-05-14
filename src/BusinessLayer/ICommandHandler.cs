@@ -1,6 +1,8 @@
-﻿namespace BusinessLayer
+﻿using Contract;
+
+namespace BusinessLayer
 {
-    public interface ICommandHandler<TCommand>
+    public interface ICommandHandler<TCommand> where TCommand : ICommand
     {
         void Handle(TCommand command);
     }

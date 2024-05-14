@@ -1,8 +1,9 @@
 ﻿namespace BusinessLayer.CrossCuttingConcerns
 {
+    using Contract;
     using System;
 
-    public class ValidationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
+    public class ValidationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand> where TCommand : ICommand
     {
         private readonly IValidator validator;
         private readonly ICommandHandler<TCommand> handler;
