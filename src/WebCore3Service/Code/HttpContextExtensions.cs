@@ -21,7 +21,9 @@
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            var executor = context.RequestServices.GetService<IActionResultExecutor<TResult>>();
+            var executor = result is NotFoundObjectResult
+                ? context.RequestServices.GetService<IActionResultExecutor<ObjectResult>>()
+                : context.RequestServices.GetService<IActionResultExecutor<TResult>>();
 
             if (executor == null)
                 throw new InvalidOperationException(
